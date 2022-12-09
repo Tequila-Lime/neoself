@@ -41,8 +41,6 @@ if env("RENDER"):
     DJANGO_SUPERUSER_PASSWORD=env("DJANGO_SUPERUSER_PASSWORD") # add this too
     DJANGO_SUPERUSER_EMAIL=env("DJANGO_SUPERUSER_EMAIL") # and also this
 
-if env("RENDER"):
-    ALLOWED_HOSTS.append(env("RENDER_EXTERNAL_HOSTNAME"))
 # Application definition
 
 INSTALLED_APPS = [
