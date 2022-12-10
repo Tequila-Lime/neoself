@@ -9,6 +9,7 @@ psycopg2-binary = "*"
 django-environ = "*"
 whitenoise = "*"
 gunicorn = "*"
+django-registration-redux = "*"
 
 [dev-packages]
 
