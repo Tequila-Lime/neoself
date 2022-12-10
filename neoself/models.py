@@ -21,8 +21,8 @@ class Questionnaire(models.Model):
     cue_question_2 = models.TextField(max_length=1000)
     cue_question_3 = models.TextField(max_length=1000)
     craving_question_1 = models.TextField(max_length=1000)
-    Response_question_1 = models.TextField(max_length=1000)
-    Response_question_2 = models.TextField(max_length=1000)
+    response_question_1 = models.TextField(max_length=1000)
+    response_question_2 = models.TextField(max_length=1000)
     signature = models.CharField(max_length=100)
 
 
@@ -33,8 +33,8 @@ class Reflection(models.Model):
     cue_question_2 = models.TextField(max_length=1000)
     cue_question_3 = models.TextField(max_length=1000)
     craving_question_1 = models.TextField(max_length=1000)
-    Response_question_1 = models.TextField(max_length=1000)
-    Response_question_2 = models.TextField(max_length=1000)
+    response_question_1 = models.TextField(max_length=1000)
+    response_question_2 = models.TextField(max_length=1000)
     goal_metric = models.IntegerField(default=0)
 
 class Record(models.Model):
