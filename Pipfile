@@ -10,6 +10,7 @@ django-environ = "*"
 whitenoise = "*"
 gunicorn = "*"
 django-registration-redux = "*"
+djangorestframework = "*"
 
 [dev-packages]
 
