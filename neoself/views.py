@@ -47,3 +47,27 @@ class QuestionnaireDetail(generics.RetrieveAPIView):
     queryset = Questionnaire.objects.all()
     serializer_class = QuestionnaireSerializer
     permission_classes = [IsAuthenticated]
+
+class ReflectionView(generics.ListCreateAPIView):
+    '''
+    These are based on questionnaire model and the data should eventually be populated by it initially
+    '''
+    queryset = Reflection.objects.all()
+    serializer_class = ReflectionSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        habits = Questionnaire.objects.filter(user=self.request.user)
+        task = []
+        for habit in habits:
+            task.append(habit.id)
+        queryset = Reflection.objects.filter(questionnaire__in=task)
+        return queryset
+
+class ReflectionDetail(generics.RetrieveUpdateAPIView):
+    '''
+    Allows user to view reflection detail. Eventually there should be a time constraint on when a user is able to update
+    '''
+    queryset = Reflection.objects.all()
+    serializer_class = ReflectionSerializer
+    permission_classes = [IsAuthenticated]
