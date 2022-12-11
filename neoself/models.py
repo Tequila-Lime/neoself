@@ -6,6 +6,9 @@ class User(AbstractUser):
     full_name = models.CharField(max_length=30, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.username
+
 class Questionnaire(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     start_end = models.BooleanField(default=False)
@@ -25,7 +28,8 @@ class Questionnaire(models.Model):
     response_question_2 = models.TextField(max_length=1000)
     signature = models.CharField(max_length=100)
 
-
+    def __str__(self):
+        return f"{self.user} habit is {self.name}"
 
 class Reflection(models.Model):
     questionnaire = models.ForeignKey(Questionnaire, on_delete=models.CASCADE, null=True, blank=True)
@@ -36,6 +40,10 @@ class Reflection(models.Model):
     response_question_1 = models.TextField(max_length=1000)
     response_question_2 = models.TextField(max_length=1000)
     goal_metric = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+
+    def __str__(self):
+        return f"reflection on {self.questionnaire}"
 
 class Record(models.Model):
     week_reflection = models.ForeignKey(Reflection, on_delete=models.CASCADE, null=True, blank=True)
@@ -47,7 +55,9 @@ class Record(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
- 
+    def __str__(self):
+        return f"record for {self.week_reflection}"
+
 class Result(models.Model):
     habit_log = models.ManyToManyField(Record)
     success = models.BooleanField(default=False)
@@ -57,11 +67,16 @@ class Notification(models.Model):
     time = models.CharField(max_length=50)
     message = models.CharField(max_length=300)
 
+    def __str__(self):
+        return f"notification for {self.habit}"
+
 class Friend(models.Model):
     current_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='current_user')
     friend = models.ForeignKey(User, on_delete=models.CASCADE, related_name='friendships')
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
+    def __str__(self):
+        return f"{self.current_user} is friends with {self.friend}"
 
 class Badge (models.Model):
     pass

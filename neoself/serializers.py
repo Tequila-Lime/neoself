@@ -17,7 +17,7 @@ class ReflectionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Reflection
-        fields = ('id','questionnaire','cue_question_1','cue_question_2','cue_question_3','craving_question_1','response_question_1','response_question_2')
+        fields = ('id','questionnaire','cue_question_1','cue_question_2','cue_question_3','craving_question_1','response_question_1','response_question_2','created_at')
 
 class RecordSerializer(serializers.ModelSerializer):
 
