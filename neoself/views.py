@@ -26,3 +26,24 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         return self.request.user
+
+class QuestionnaireView(generics.ListCreateAPIView):
+    '''
+    Users can see all their habits they wanted to start
+    '''
+    queryset = Questionnaire.objects.all()
+    serializer_class = QuestionnaireSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = Questionnaire.objects.filter(user=self.request.user)
+        return queryset
+
+class QuestionnaireDetail(generics.RetrieveAPIView):
+    '''
+    Users should only be able to see the individual Questionnaire after they created it.
+    Editing to this plan will be done in the weekly reflections 
+    '''
+    queryset = Questionnaire.objects.all()
+    serializer_class = QuestionnaireSerializer
+    permission_classes = [IsAuthenticated]
