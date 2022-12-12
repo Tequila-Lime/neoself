@@ -8,9 +8,9 @@ urlpatterns = [
     path('questionnaire/<int:pk>/',views.QuestionnaireDetail.as_view(), name='specific-habit-questionnaire'),
     path('reflection/', views.ReflectionView.as_view(), name="reflection"),
     path('reflection/<int:pk>/', views.ReflectionDetail.as_view(), name=('reflection-detail')),
-    path('friends', views.FriendView.as_view(), name="friend"),
+    path('friends/', views.FriendView.as_view(), name="friend"),
     path('friends/<int:pk>/', views.FriendDetail.as_view(), name="friend-detail"),
-    path('friends/search/', views.FriendHabitSearchView.as_view(), name="friend-search")
+    path('friends/search/', views.FriendHabitSearchView.as_view(), name="friend-search"),
     path('record/all/', views.RecordView.as_view(), name='all-records'),
     path('record/<int:pk>/', views.RecordDetail.as_view(), name='record-detail'),
 ]

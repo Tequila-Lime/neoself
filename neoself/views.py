@@ -91,7 +91,7 @@ class FriendView(generics.ListCreateAPIView):
     serializer_class = FriendSerializer
     permission_classes = [IsAuthenticated]
 
-class FriendDetail(generics.RetrieveUpdateAPIView):
+class FriendDetail(generics.RetrieveUpdateDestroyAPIView):
     '''
     Allows user to view friend detail as well as delete the relationship.
     '''
