@@ -71,3 +71,31 @@ class ReflectionDetail(generics.RetrieveUpdateAPIView):
     queryset = Reflection.objects.all()
     serializer_class = ReflectionSerializer
     permission_classes = [IsAuthenticated]
+
+class FriendView(generics.ListCreateAPIView):
+    '''
+    Allows user to view friends list as well as add an a new friend.
+    '''
+    queryset = Friend.objects.all()
+    serializer_class = FriendSerializer
+    permission_classes = [IsAuthenticated]
+
+class FriendDetail(generics.RetrieveUpdateAPIView):
+    '''
+    Allows user to view friend detail as well as delete the relationship.
+    '''
+    queryset = Friend.objects.all()
+    serializer_class = FriendSerializer
+    permission_classes = [IsAuthenticated]
+
+class FriendHabitSearchView(generics.ListCreateAPIView):
+    '''
+    Allows user to search friends by habit
+    '''
+    queryset = Friend.objects.all()
+    serializer_class = FriendSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = Friend.objects.filter(friend_id__questionnaire__name=self.request.user)
+        return queryset
