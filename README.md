@@ -1,6 +1,7 @@
 # neoself
 The repository for Tequila &amp; Lime's Final Momentum project
-
+# Deployment
+https://neoself-be-service.onrender.com
 
 # Endpoints
 |Url|Description|Request|
@@ -13,3 +14,6 @@ The repository for Tequila &amp; Lime's Final Momentum project
 |reflection/int:pk/ | see the details for an individual reflection | GET, PUT |
 |record/all/| be able to see all the users own records | GET, POST |
 |record/int:pk| be able to look at an individual record | GET, PUT|
+|friends/| able to see friends profiles | GET, POST|
+|friends/int:pk/| to see a specific friend | GET, DELETE, PUT |
+|friends/search/| search for your friends | GET, POST |
