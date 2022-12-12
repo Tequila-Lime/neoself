@@ -48,6 +48,21 @@ class QuestionnaireDetail(generics.RetrieveAPIView):
     serializer_class = QuestionnaireSerializer
     permission_classes = [IsAuthenticated]
 
+class RecordView(generics.ListCreateAPIView):
+    queryset = Record.objects.all()
+    serializer_class = RecordSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = Record.objects.filter(week_reflection__questionnaire__user=self.request.user)
+        return queryset
+# Try to make a record view that seperates habit
+
+class RecordDetail(generics.RetrieveUpdateAPIView):
+    queryset = Record.objects.all()
+    serializer_class = RecordSerializer
+    permission_classes = [IsAuthenticated]
+
 class ReflectionView(generics.ListCreateAPIView):
     '''
     These are based on questionnaire model and the data should eventually be populated by it initially
@@ -57,11 +72,7 @@ class ReflectionView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        habits = Questionnaire.objects.filter(user=self.request.user)
-        task = []
-        for habit in habits:
-            task.append(habit.id)
-        queryset = Reflection.objects.filter(questionnaire__in=task)
+        queryset = Reflection.objects.filter(questionnaire__user=self.request.user)
         return queryset
 
 class ReflectionDetail(generics.RetrieveUpdateAPIView):
