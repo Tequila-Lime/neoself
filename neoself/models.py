@@ -74,6 +74,7 @@ class Friend(models.Model):
     current_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='current_user')
     friend = models.ForeignKey(User, on_delete=models.CASCADE, related_name='friendships')
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    best_friend = models.BooleanField(default='False')
 
     def __str__(self):
         return f"{self.current_user} is friends with {self.friend}"
