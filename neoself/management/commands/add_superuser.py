@@ -20,4 +20,5 @@ class Command(BaseCommand):
           user.email = settings.DJANGO_SUPERUSER_EMAIL
           user.set_password(settings.DJANGO_SUPERUSER_PASSWORD)
           user.is_superuser = True
+          user.is_staff = True
           user.save()
