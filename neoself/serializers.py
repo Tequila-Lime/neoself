@@ -11,19 +11,19 @@ class QuestionnaireSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Questionnaire
-        fields = ('id','user','start_end','name','created_at','duration','metric_label','metric_baseline','goal_label','goal_metric','opt_in','cue_question_1','cue_question_2','cue_question_3','craving_question_1','response_question_1',    'response_question_2','signature' )
+        fields = ('id','user','start_end','name','date','duration','metric_label','metric_baseline','goal_label','goal_metric','opt_in','cue_question_1','cue_question_2','cue_question_3','craving_question_1','response_question_1',    'response_question_2','signature' )
 
 class ReflectionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Reflection
-        fields = ('id','questionnaire','cue_question_1','cue_question_2','cue_question_3','craving_question_1','response_question_1','response_question_2','created_at')
+        fields = ('id','questionnaire','cue_question_1','cue_question_2','cue_question_3','craving_question_1','response_question_1','response_question_2','date')
 
 class RecordSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Record
-        fields = ('id','week_reflection','daily_record','cue_dh','craving_dh','response_dh','comment_dh','created_at','updated_at' )
+        fields = ('id','week_reflection','daily_record','cue_dh','craving_dh','response_dh','comment_dh','date')
 
 class ResultSerializer(serializers.ModelSerializer):
 
