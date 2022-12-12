@@ -11,3 +11,5 @@ The repository for Tequila &amp; Lime's Final Momentum project
 |questionnaire/int:pk/| This shows an individual questionnaire filled out | GET |
 |reflection/| see all reflections for a particular user | GET, POST |
 |reflection/int:pk/ | see the details for an individual reflection | GET, PUT |
+|record/all/| be able to see all the users own records | GET, POST |
+|record/int:pk| be able to look at an individual record | GET, PUT|

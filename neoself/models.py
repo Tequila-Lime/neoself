@@ -48,9 +48,9 @@ class Reflection(models.Model):
 class Record(models.Model):
     week_reflection = models.ForeignKey(Reflection, on_delete=models.CASCADE, null=True, blank=True)
     daily_record = models.IntegerField(default=0)
-    cue_dh = models.BooleanField(default=True)
-    craving_dh = models.BooleanField(default=True)
-    response_dh = models.BooleanField(default=True)
+    cue_dh = models.BooleanField(default=False)
+    craving_dh = models.BooleanField(default=False)
+    response_dh = models.BooleanField(default=False)
     comment_dh = models.TextField(max_length=1000)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
