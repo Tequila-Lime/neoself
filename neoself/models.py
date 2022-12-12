@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from datetime import date
 
 class User(AbstractUser):
     bio = models.TextField(max_length=500, blank=True)
@@ -13,7 +14,7 @@ class Questionnaire(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     start_end = models.BooleanField(default=False)
     name = models.CharField(max_length=200)
-    created_at = models.DateTimeField(auto_now_add=True)
+    date = models.DateField(default=date.today)
     duration = models.IntegerField(default=30)
     metric_label = models.CharField(max_length=50)
     metric_baseline = models.IntegerField(default=0)
@@ -40,10 +41,15 @@ class Reflection(models.Model):
     response_question_1 = models.TextField(max_length=1000)
     response_question_2 = models.TextField(max_length=1000)
     goal_metric = models.IntegerField(default=0)
-    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    date = models.DateField(default=date.today)
 
     def __str__(self):
         return f"reflection on {self.questionnaire}"
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['date', 'questionnaire'], name='unique_reflection')
+        ]
 
 class Record(models.Model):
     week_reflection = models.ForeignKey(Reflection, on_delete=models.CASCADE, null=True, blank=True)
@@ -52,11 +58,15 @@ class Record(models.Model):
     craving_dh = models.BooleanField(default=False)
     response_dh = models.BooleanField(default=False)
     comment_dh = models.TextField(max_length=1000)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    date = models.DateField(default=date.today)
 
     def __str__(self):
         return f"record for {self.week_reflection}"
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['date', 'week_reflection'], name='unique_record')
+        ]
 
 class Result(models.Model):
     habit_log = models.ManyToManyField(Record)
@@ -78,6 +88,11 @@ class Friend(models.Model):
 
     def __str__(self):
         return f"{self.current_user} is friends with {self.friend}"
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['current_user', 'friend'], name='unique_friendship')
+        ]
 
 class Badge (models.Model):
     pass
