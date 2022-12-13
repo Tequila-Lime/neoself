@@ -44,7 +44,7 @@ class Reflection(models.Model):
     date = models.DateField(default=date.today)
 
     def __str__(self):
-        return f"reflection on {self.questionnaire}"
+        return f"reflection on {self.questionnaire} on {self.date}"
 
     class Meta:
         constraints = [
