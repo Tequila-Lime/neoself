@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from datetime import date
+from django.db.models.signals import post_save
+from django.shortcuts import get_object_or_404
+from django.dispatch import receiver
 
 class User(AbstractUser):
     bio = models.TextField(max_length=500, blank=True)
@@ -12,8 +15,8 @@ class User(AbstractUser):
 
 class Questionnaire(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    start_end = models.BooleanField(default=False)
-    name = models.CharField(max_length=200)
+    start_habit = models.BooleanField(default=True)
+    habit_name = models.CharField(max_length=200)
     date = models.DateField(default=date.today)
     duration = models.IntegerField(default=30)
     metric_label = models.CharField(max_length=50)
@@ -28,9 +31,10 @@ class Questionnaire(models.Model):
     response_question_1 = models.TextField(max_length=1000)
     response_question_2 = models.TextField(max_length=1000)
     signature = models.CharField(max_length=100)
+    start_today = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.user} habit is {self.name}"
+        return f"{self.user} habit is {self.habit_name}"
 
 class Reflection(models.Model):
     questionnaire = models.ForeignKey(Questionnaire, on_delete=models.CASCADE, null=True, blank=True)
@@ -50,6 +54,7 @@ class Reflection(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['date', 'questionnaire'], name='unique_reflection')
         ]
+# A model that gets all the data for the week so we can give a summary
 
 class Record(models.Model):
     week_reflection = models.ForeignKey(Reflection, on_delete=models.CASCADE, null=True, blank=True)
@@ -96,3 +101,19 @@ class Friend(models.Model):
 
 class Badge (models.Model):
     pass
+
+@receiver(post_save, sender=Questionnaire)
+def save_reflection(sender,instance,created, *args, **kwargs):
+    if created:
+        Reflection.objects.create(
+            questionnaire = instance,
+            cue_question_1 = instance.cue_question_1,
+            cue_question_2 = instance.cue_question_2,
+            cue_question_3 = instance.cue_question_3,
+            craving_question_1 = instance.craving_question_1,
+            response_question_1 = instance.response_question_1,
+            response_question_2 = instance.response_question_2,
+            goal_metric = instance.goal_metric,
+            date = instance.date
+        )
+        instance.save()
