@@ -5,6 +5,9 @@ from django.db.models.signals import post_save
 from django.shortcuts import get_object_or_404
 from django.dispatch import receiver
 import datetime
+from datetime import datetime, timedelta
+import time
+from django.db.models import Q
 
 class User(AbstractUser):
     bio = models.TextField(max_length=500, blank=True)
@@ -68,7 +71,7 @@ class Record(models.Model):
     date = models.DateField(default=date.today)
 
     def __str__(self):
-        return f"record for {self.week_reflection}"
+        return f"record on {self.date} for {self.week_reflection}"
 
     class Meta:
         constraints = [
@@ -126,5 +129,42 @@ def save_reflection(sender,instance,created, *args, **kwargs):
             date = instance.date
         )
         instance.save()
+
 #need day_in_habit to be determined by the date and auto generated
+@receiver(post_save, sender=Reflection)
+def all_habit_records(sender, instance, created, *args, **kwargs):  
+    if created:
+        questionnaire = Questionnaire.objects.get(id=instance.questionnaire.id)
+        count = 0
+        added_day = timedelta(days=1)
+        reflection_day = instance.date
+        d1 = datetime.strptime(f"{instance.date}", "%Y-%m-%d")
+        d2 = datetime.strptime(f"{questionnaire.date}", "%Y-%m-%d")
+        difference = d1-d2
+        amount = questionnaire.duration-difference.days
+
+        for x in range(amount): 
+            if difference.days == 0:
+                Record.objects.create(
+                    week_reflection = instance,
+                    daily_record = 0,
+                    cue_dh = False,
+                    craving_dh = False,
+                    response_dh = False,
+                    comment_dh = False,
+                    day_in_habit = count + 1,
+                    date = reflection_day + added_day,
+                )
+                
+            else:
+                records = Record.objects.filter(week_reflection__questionnaire__id=questionnaire.id, date=reflection_day + added_day)
+                ids =[]
+                for record in records:
+                    ids.append(record.id)
+                Record.objects.filter(id__in=ids).update(week_reflection=instance)
+            
+            added_day+=timedelta(days=1)
+            count+=1
+        instance.save()
+
 # Need all records for a particular habit to be made in a week to automatically be put together to make a week summary 
