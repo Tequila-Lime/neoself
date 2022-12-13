@@ -4,6 +4,7 @@ from datetime import date
 from django.db.models.signals import post_save
 from django.shortcuts import get_object_or_404
 from django.dispatch import receiver
+import datetime
 
 class User(AbstractUser):
     bio = models.TextField(max_length=500, blank=True)
@@ -54,7 +55,6 @@ class Reflection(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['date', 'questionnaire'], name='unique_reflection')
         ]
-# A model that gets all the data for the week so we can give a summary
 
 class Record(models.Model):
     week_reflection = models.ForeignKey(Reflection, on_delete=models.CASCADE, null=True, blank=True)
@@ -63,6 +63,7 @@ class Record(models.Model):
     craving_dh = models.BooleanField(default=False)
     response_dh = models.BooleanField(default=False)
     comment_dh = models.TextField(max_length=1000)
+    day_in_habit = models.IntegerField(default=0)
     date = models.DateField(default=date.today)
 
     def __str__(self):
@@ -72,6 +73,13 @@ class Record(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['date', 'week_reflection'], name='unique_record')
         ]
+
+# A model that gets all the data for the week so we can give a summary
+class WeekLog(models.Model):
+    questionnaire = models.ForeignKey(Questionnaire, on_delete=models.CASCADE, null=True, blank=True)
+    reflection = models.ManyToManyField(Reflection)
+    records = models.ManyToManyField(Record)
+    date = models.DateField(default=date.today)
 
 class Result(models.Model):
     habit_log = models.ManyToManyField(Record)
@@ -117,3 +125,5 @@ def save_reflection(sender,instance,created, *args, **kwargs):
             date = instance.date
         )
         instance.save()
+#need day_in_habit to be determined by the date and auto generated
+# Need all records for a particular habit to be made in a week to automatically be put together to make a week summary 
