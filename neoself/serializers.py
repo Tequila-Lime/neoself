@@ -5,7 +5,7 @@ class UserSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ('id','username','full_name','bio','created_at')
+        fields = ('id','username','full_name','bio','created_at', 'avatar')
 
 class QuestionnaireSerializer(serializers.ModelSerializer):
 

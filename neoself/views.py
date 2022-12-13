@@ -103,7 +103,7 @@ class FriendHabitSearchView(generics.ListCreateAPIView):
     '''
     Allows user to search friends by habit
     '''
-    queryset = Friend.objects.all()
+    queryset = Friend.objects.all().prefetch_related('friends', 'questionnaire', 'name')
     serializer_class = FriendSerializer
     permission_classes = [IsAuthenticated]
 
