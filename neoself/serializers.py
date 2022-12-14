@@ -23,7 +23,7 @@ class RecordSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Record
-        fields = ('id','week_reflection','daily_record','cue_dh','craving_dh','response_dh','comment_dh','date')
+        fields = ('id','week_reflection','daily_record','cue_dh','craving_dh','response_dh','comment_dh','date','public','filled_in')
 
 class ResultSerializer(serializers.ModelSerializer):
 

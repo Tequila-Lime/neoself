@@ -3,11 +3,15 @@ from .models import User,Questionnaire,Reflection,Record,Result,Notification,Fri
 from .serializers import UserSerializer,QuestionnaireSerializer,ReflectionSerializer,RecordSerializer,ResultSerializer,NotificationSerializer,FriendSerializer 
 from rest_framework import generics, status, parsers
 from rest_framework.decorators import api_view
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
 from django.db.models import Q
 from django.contrib.postgres.search import SearchVector,SearchQuery,SearchRank
 from django.db import IntegrityError
+import datetime
+from datetime import datetime, timedelta
+import time
+from datetime import date
 # Create your views here.
 
 class UserView(generics.ListAPIView):
@@ -46,7 +50,7 @@ class QuestionnaireDetail(generics.RetrieveAPIView):
     '''
     queryset = Questionnaire.objects.all()
     serializer_class = QuestionnaireSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class RecordView(generics.ListCreateAPIView):
     queryset = Record.objects.all()
@@ -54,14 +58,34 @@ class RecordView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        queryset = Record.objects.filter(week_reflection__questionnaire__user=self.request.user)
+        first = date(2000,5,17)
+        today = date.today()
+        queryset = Record.objects.filter(week_reflection__questionnaire__user=self.request.user, date__range=(first, today)).order_by('-date')
         return queryset
 # Try to make a record view that seperates habit
+
+class FriendRecordView(generics.ListAPIView):
+    queryset = Record.objects.all()
+    serializer_class = RecordSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        friends = Friend.objects.filter(Q(current_user=self.request.user) | Q(friend=self.request.user))
+        people = []
+        for friend in friends:
+            if friend.current_user == self.request.user:
+                people.append(friend.friend)
+            else:
+                people.append(friend.current_user)
+        first = date(2000,5,17)
+        today = date.today()
+        queryset = Record.objects.filter(week_reflection__questionnaire__user__in=people, date__range=(first, today), public=True, filled_in=True).order_by('-date')
+        return queryset
 
 class RecordDetail(generics.RetrieveUpdateAPIView):
     queryset = Record.objects.all()
     serializer_class = RecordSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class ReflectionView(generics.ListCreateAPIView):
     '''
@@ -81,7 +105,7 @@ class ReflectionDetail(generics.RetrieveUpdateAPIView):
     '''
     queryset = Reflection.objects.all()
     serializer_class = ReflectionSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated] 
 
 class FriendView(generics.ListCreateAPIView):
     '''

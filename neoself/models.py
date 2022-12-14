@@ -175,4 +175,11 @@ def all_habit_records(sender, instance, created, *args, **kwargs):
             count+=1
         instance.save()
 
+@receiver(post_save, sender=Record)
+def record_filled_in(sender, instance, created, *args, **kwargs):
+    if not created:
+        Record.objects.filter(pk=instance.pk).update(filled_in=True)
+
+
+
 # Need all records for a particular habit to be made in a week to automatically be put together to make a week summary 
