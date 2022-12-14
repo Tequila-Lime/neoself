@@ -69,6 +69,7 @@ class Record(models.Model):
     comment_dh = models.TextField(max_length=1000)
     day_in_habit = models.IntegerField(default=0)
     date = models.DateField(default=date.today)
+    filled_in = models.BooleanField(default=False)
 
     def __str__(self):
         return f"record on {self.date} for {self.week_reflection}"
@@ -137,7 +138,10 @@ def all_habit_records(sender, instance, created, *args, **kwargs):
         questionnaire = Questionnaire.objects.get(id=instance.questionnaire.id)
         count = 0
         added_day = timedelta(days=1)
-        reflection_day = instance.date
+        if questionnaire.start_today == True:
+            reflection_day = instance.date - added_day
+        else: 
+            reflection_day = instance.date 
         d1 = datetime.strptime(f"{instance.date}", "%Y-%m-%d")
         d2 = datetime.strptime(f"{questionnaire.date}", "%Y-%m-%d")
         difference = d1-d2
