@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User,Questionnaire,Reflection,Record,Result,Notification,Friend,Badge  
+from .models import User,Questionnaire,Reflection,Record,Result,Notification,Friend,Badge,WeekLog
 
 class UserSerializer(serializers.ModelSerializer):
     
@@ -42,3 +42,8 @@ class FriendSerializer(serializers.ModelSerializer):
     class Meta:
         model = Friend
         fields = ('id','current_user','friend','created_at')
+
+class WeekLogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WeekLog
+        fields = '__all__'

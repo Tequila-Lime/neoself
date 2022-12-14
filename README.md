@@ -15,6 +15,7 @@ https://neoself-be-service.onrender.com
 |record/user/| be able to see all the users own records | GET, POST |
 |record/friends/| see all friends most recent records that are public | GET |
 |record/int:pk| be able to look at an individual record | GET, PUT|
+|weeklogs/| able to see all the records for a particular week for a particular habit | GET|
 |friends/| able to see friends profiles | GET, POST|
 |friends/int:pk/| to see a specific friend | GET, DELETE, PUT |
 |friends/search/| search for your friends | GET, POST |

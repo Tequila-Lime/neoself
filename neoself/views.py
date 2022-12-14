@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import User,Questionnaire,Reflection,Record,Result,Notification,Friend,Badge  
-from .serializers import UserSerializer,QuestionnaireSerializer,ReflectionSerializer,RecordSerializer,ResultSerializer,NotificationSerializer,FriendSerializer 
+from .models import User,Questionnaire,Reflection,Record,Result,Notification,Friend,Badge,WeekLog 
+from .serializers import UserSerializer,QuestionnaireSerializer,ReflectionSerializer,RecordSerializer,WeekLogSerializer,ResultSerializer,NotificationSerializer,FriendSerializer 
 from rest_framework import generics, status, parsers
 from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
@@ -126,6 +126,17 @@ class FriendView(generics.ListCreateAPIView):
     queryset = Friend.objects.all()
     serializer_class = FriendSerializer
     permission_classes = [IsAuthenticated]
+
+class WeekLogView(generics.ListAPIView):
+    queryset = WeekLog.objects.all()
+    serializer_class = WeekLogSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        first = date(2000,5,17)
+        today = date.today()
+        queryset = WeekLog.objects.filter(questionnaire__user=self.request.user, date__range=(first, today)).order_by('-date')
+        return queryset
 
 class FriendDetail(generics.RetrieveUpdateDestroyAPIView):
     '''
