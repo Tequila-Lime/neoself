@@ -71,6 +71,7 @@ class Record(models.Model):
     day_in_habit = models.IntegerField(default=0)
     date = models.DateField(default=date.today)
     filled_in = models.BooleanField(default=False)
+    public = models.BooleanField(default=True)
 
     def __str__(self):
         return f"record on {self.date} for {self.week_reflection}"
@@ -160,6 +161,7 @@ def all_habit_records(sender, instance, created, *args, **kwargs):
                     comment_dh = False,
                     day_in_habit = count + 1,
                     date = reflection_day + added_day,
+                    public = True
                 )
                 
             else:
