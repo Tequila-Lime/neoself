@@ -4,6 +4,7 @@ from . import views
 urlpatterns = [
     path('user/', views.UserView.as_view(), name='user-profile'),
     path('user/self/', views.UserDetail.as_view(), name='user-detail'),
+    path('user/search/', views.UserSearchList.as_view(), name="user-search"),
     path('questionnaire/', views.QuestionnaireView.as_view(), name='habit-questionnaire'),
     path('questionnaire/<int:pk>/',views.QuestionnaireDetail.as_view(), name='specific-habit-questionnaire'),
     path('reflection/', views.ReflectionView.as_view(), name="reflection"),
@@ -13,5 +14,5 @@ urlpatterns = [
     path('friends/search/', views.FriendHabitSearchView.as_view(), name="friend-search"),
     path('record/user/', views.RecordView.as_view(), name='user-records'),
     path('record/<int:pk>/', views.RecordDetail.as_view(), name='record-detail'),
-    path('record/friends/', views.FriendRecordView.as_view(), name='friends-record')
+    path('record/friends/', views.FriendRecordView.as_view(), name='friends-record'),
 ]

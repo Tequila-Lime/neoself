@@ -31,6 +31,18 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     def get_object(self):
         return self.request.user
 
+class UserSearchList(generics.ListAPIView):
+    model = User
+    context_object_name = "quotes"
+    serializer_class= UserSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        query = self.request.GET.get("q")
+        return User.objects.annotate(search=SearchVector("username","first_name","last_name")).filter(
+            search=query
+        )
+
 class QuestionnaireView(generics.ListCreateAPIView):
     '''
     Users can see all their habits they wanted to start
