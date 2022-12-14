@@ -17,7 +17,8 @@ import os
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False),
-	RENDER=(bool, False) # <--- add this 
+	    RENDER=(bool, False),
+    USE_S3 = (bool,False)# <--- add this 
 )
 
 environ.Env.read_env()
