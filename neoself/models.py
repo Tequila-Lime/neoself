@@ -49,6 +49,7 @@ class Reflection(models.Model):
     craving_question_1 = models.TextField(max_length=1000)
     response_question_1 = models.TextField(max_length=1000)
     response_question_2 = models.TextField(max_length=1000)
+    metric_baseline = models.IntegerField(default=0)
     goal_metric = models.IntegerField(default=0)
     date = models.DateField(default=date.today)
 
@@ -126,6 +127,7 @@ def save_reflection(sender,instance,created, *args, **kwargs):
             craving_question_1 = instance.craving_question_1,
             response_question_1 = instance.response_question_1,
             response_question_2 = instance.response_question_2,
+            metric_baseline = instance.metric_baseline,
             goal_metric = instance.goal_metric,
             date = instance.date
         )
