@@ -84,11 +84,15 @@ class Record(models.Model):
 # A model that gets all the data for the week so we can give a summary
 class WeekLog(models.Model):
     questionnaire = models.ForeignKey(Questionnaire, on_delete=models.CASCADE, null=True, blank=True)
-    reflection = models.ManyToManyField(Reflection)
     records = models.ManyToManyField(Record)
     date = models.DateField(default=date.today)
+    day = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.questionnaire.user} {self.questionnaire.habit_name} on {self.date}"
 
 class Result(models.Model):
+    questionnaire = models.ForeignKey(Questionnaire, on_delete=models.CASCADE, null=True, blank=True)
     habit_log = models.ManyToManyField(Record)
     success = models.BooleanField(default=False)
 
@@ -132,6 +136,21 @@ def save_reflection(sender,instance,created, *args, **kwargs):
             goal_metric = instance.goal_metric,
             date = instance.date
         )
+        loops = round(instance.duration / 7)
+        if instance.start_today == True:
+            wk_check = instance.date - timedelta(days=1)
+        else:
+            wk_check = instance.date
+        num = 7
+        for x in range(loops):
+            #  + timedelta(days=7)
+            WeekLog.objects.create(
+                questionnaire = instance,
+                date = wk_check + timedelta(days=7),
+                day = num
+            ) 
+            wk_check += timedelta(days=7)
+            num += 7
         instance.save()
 
 #need day_in_habit to be determined by the date and auto generated
@@ -180,6 +199,14 @@ def record_filled_in(sender, instance, created, *args, **kwargs):
     if not created:
         Record.objects.filter(pk=instance.pk).update(filled_in=True)
 
-
-
 # Need all records for a particular habit to be made in a week to automatically be put together to make a week summary 
+@receiver(post_save, sender=WeekLog)
+def week_logs(sender, instance, created, *args, **kwargs):
+    if created:
+        top = instance.date
+        bottom =instance.date - timedelta(days=6)
+        records = Record.objects.filter(week_reflection__questionnaire = instance.questionnaire,
+        date__range=(bottom,top) )
+        object = WeekLog.objects.get(id=instance.id)
+        for record in records:
+            object.records.add(record)

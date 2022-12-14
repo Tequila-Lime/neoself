@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User,Questionnaire,Reflection,Record,Result,Notification,Friend,Badge 
+from .models import User,Questionnaire,Reflection,Record,Result,Notification,Friend,Badge, WeekLog
 from django.contrib.auth.admin import UserAdmin
 
 
@@ -12,3 +12,4 @@ admin.site.register(Result)
 admin.site.register(Notification)
 admin.site.register(Friend)
 admin.site.register(Badge)
+admin.site.register(WeekLog)
