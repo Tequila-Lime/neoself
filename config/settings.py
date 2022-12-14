@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 import environ
 import os
+from corsheaders.defaults import default_headers
 
 env = environ.Env(
     # set casting, default value
@@ -37,13 +38,6 @@ DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = []
 
-if env("RENDER"):
-    ALLOWED_HOSTS.append(env("RENDER_EXTERNAL_HOSTNAME"))
-    DJANGO_SUPERUSER_USERNAME=env("DJANGO_SUPERUSER_USERNAME") # add this
-    DJANGO_SUPERUSER_PASSWORD=env("DJANGO_SUPERUSER_PASSWORD") # add this too
-    DJANGO_SUPERUSER_EMAIL=env("DJANGO_SUPERUSER_EMAIL") # and also this
-
-# Application definition
 
 INSTALLED_APPS = [
     'registration',
@@ -52,17 +46,21 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    "whitenoise.runserver_nostatic",
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
-    'neoself',
+    'corsheaders',
     'rest_framework',
+    'rest_framework.authtoken',
     'storages',
+    'djoser',
+    'neoself',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -135,28 +133,51 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+STATIC_ROOT = BASE_DIR / "staticfiles" # <-- add this
+
+if not DEBUG: 
+    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STATIC_URL = "static/"
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
-STATIC_ROOT = BASE_DIR / "staticfiles" # <-- add this
-
-# add the following lines
-if not DEBUG: 
-    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+if env("RENDER"):
+    ALLOWED_HOSTS.append(env("RENDER_EXTERNAL_HOSTNAME"))
+    DJANGO_SUPERUSER_USERNAME=env("DJANGO_SUPERUSER_USERNAME") # add this
+    DJANGO_SUPERUSER_PASSWORD=env("DJANGO_SUPERUSER_PASSWORD") # add this too
+    DJANGO_SUPERUSER_EMAIL=env("DJANGO_SUPERUSER_EMAIL") # and also this
 
 AUTH_USER_MODEL = 'neoself.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-    ]
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
 }
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'content-disposition',
+]
+
+DJOSER = {
+    'SERIALIZERS': {
+        'current_user': 'api.serializers.UserSerializer',
+    },
+}
+
+STATIC_ROOT = BASE_DIR / "staticfiles" # <-- add this
+
+# add the following lines
 
 if env('USE_S3'):
     # These are necessary for AWS / make sure these are set in production as well
