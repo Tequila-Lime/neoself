@@ -175,6 +175,7 @@ def all_habit_records(sender, instance, created, *args, **kwargs):
         questionnaire = Questionnaire.objects.get(id=instance.questionnaire.id)
         count = 0
         added_day = timedelta(days=1)
+        # when to start counting records
         if questionnaire.start_today == True:
             reflection_day = instance.date - added_day
         else: 
@@ -183,21 +184,29 @@ def all_habit_records(sender, instance, created, *args, **kwargs):
         d2 = datetime.strptime(f"{questionnaire.date}", "%Y-%m-%d")
         difference = d1-d2
         amount = questionnaire.duration-difference.days
-
+        # determines day of week
+        dow = [questionnaire.monday,questionnaire.tuesday,questionnaire.wednesday,questionnaire.thursday,questionnaire.friday,questionnaire.saturday,questionnaire.sunday]
+        dow_num = []
+        dow_count = 0
+        for time in dow:
+            if time == True:
+                dow_num.append(dow_count)
+            dow_count += 1
         for x in range(amount): 
             if difference.days == 0:
-                Record.objects.create(
-                    week_reflection = instance,
-                    daily_record = 0,
-                    cue_dh = False,
-                    craving_dh = False,
-                    response_dh = False,
-                    comment_dh = False,
-                    day_in_habit = count + 1,
-                    date = reflection_day + added_day,
-                    public = True
-                )
-                
+                weekday_eval = reflection_day + added_day 
+                if weekday_eval.weekday() in dow_num:
+                    Record.objects.create(
+                        week_reflection = instance,
+                        daily_record = 0,
+                        cue_dh = False,
+                        craving_dh = False,
+                        response_dh = False,
+                        comment_dh = False,
+                        day_in_habit = count + 1,
+                        date = reflection_day + added_day,
+                        public = True
+                    )
             else:
                 records = Record.objects.filter(week_reflection__questionnaire__id=questionnaire.id, date=reflection_day + added_day)
                 ids =[]
