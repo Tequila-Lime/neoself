@@ -170,6 +170,9 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
     'content-disposition',
 ]
 
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR/ "media"
+
 DJOSER = {
     'SERIALIZERS': {
         'current_user': 'api.serializers.UserSerializer',

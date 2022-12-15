@@ -171,3 +171,13 @@ class FriendHabitSearchView(generics.ListCreateAPIView):
     def get_queryset(self):
         queryset = Friend.objects.filter(friend_id__questionnaire__name=self.request.user)
         return queryset
+
+class UserAvatarView(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    parser_classes = [parsers.FileUploadParser]
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        #return User.objects.first()
+        return self.request.user
