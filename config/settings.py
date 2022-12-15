@@ -18,7 +18,7 @@ from corsheaders.defaults import default_headers
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False),
-	    RENDER=(bool, False),
+	RENDER=(bool, False),
     USE_S3 = (bool,False)# <--- add this 
 )
 
@@ -137,7 +137,7 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
-STATIC_ROOT = BASE_DIR / "staticfiles" # <-- add this
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 if not DEBUG: 
     STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
@@ -149,9 +149,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 if env("RENDER"):
     ALLOWED_HOSTS.append(env("RENDER_EXTERNAL_HOSTNAME"))
-    DJANGO_SUPERUSER_USERNAME=env("DJANGO_SUPERUSER_USERNAME") # add this
-    DJANGO_SUPERUSER_PASSWORD=env("DJANGO_SUPERUSER_PASSWORD") # add this too
-    DJANGO_SUPERUSER_EMAIL=env("DJANGO_SUPERUSER_EMAIL") # and also this
+    DJANGO_SUPERUSER_USERNAME=env("DJANGO_SUPERUSER_USERNAME") 
+    DJANGO_SUPERUSER_PASSWORD=env("DJANGO_SUPERUSER_PASSWORD")
+    DJANGO_SUPERUSER_EMAIL=env("DJANGO_SUPERUSER_EMAIL")
 
 AUTH_USER_MODEL = 'neoself.User'
 

@@ -160,17 +160,17 @@ class FriendDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = FriendSerializer
     permission_classes = [IsAuthenticated]
 
-class FriendHabitSearchView(generics.ListCreateAPIView):
+class FriendSearchView(generics.ListCreateAPIView):
+    pass
     '''
-    Allows user to search friends by habit
-    '''
-    queryset = Friend.objects.all().prefetch_related('friends', 'questionnaire', 'name')
+    queryset = Friend.objects.all().filter('friend')
     serializer_class = FriendSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        queryset = Friend.objects.filter(friend_id__questionnaire__name=self.request.user)
+        queryset = Friend.objects.filter(friend=self.request.user)
         return queryset
+    '''
 
 class UserAvatarView(generics.UpdateAPIView):
     queryset = User.objects.all()
