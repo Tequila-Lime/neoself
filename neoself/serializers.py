@@ -29,7 +29,7 @@ class ResultSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Result
-        fields = ('id','habit_log','success')
+        fields = ('id','questionnaire','habit_log','success')
 
 class NotificationSerializer(serializers.ModelSerializer):
 
