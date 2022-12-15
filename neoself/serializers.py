@@ -7,6 +7,14 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id','username','full_name','bio','created_at', 'avatar')
 
+    def update(self, instance, validated_data):
+        if "file" in self.initial_data:
+            file = self.initial_data.get("file")
+            instance.avatar.save(file.name, file, save=True)
+            return instance
+        # this call to super is to make sure that update still works for other fields
+        return super().update(instance, validated_data)
+        
 class QuestionnaireSerializer(serializers.ModelSerializer):
 
     class Meta:
