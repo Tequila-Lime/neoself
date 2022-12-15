@@ -23,6 +23,15 @@ class Questionnaire(models.Model):
     start_habit = models.BooleanField(default=True)
     habit_name = models.CharField(max_length=200)
     date = models.DateField(default=date.today)
+
+    sunday = models.BooleanField(default=True)
+    monday = models.BooleanField(default=True)
+    tuesday = models.BooleanField(default=True)
+    wednesday = models.BooleanField(default=True)
+    thursday = models.BooleanField(default=True)
+    friday = models.BooleanField(default=True)
+    saturday = models.BooleanField(default=True)
+
     duration = models.IntegerField(default=30)
     metric_label = models.CharField(max_length=50)
     metric_baseline = models.IntegerField(default=0)
