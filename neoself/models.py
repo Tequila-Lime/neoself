@@ -96,6 +96,9 @@ class Result(models.Model):
     habit_log = models.ManyToManyField(Record)
     success = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f"Result for {self.questionnaire.user} habit {self.questionnaire.habit_name}"
+
 class Notification(models.Model):
     habit = models.ForeignKey(Questionnaire, on_delete=models.CASCADE, null=True, blank=True)
     time = models.CharField(max_length=50)
@@ -151,6 +154,9 @@ def save_reflection(sender,instance,created, *args, **kwargs):
             ) 
             wk_check += timedelta(days=7)
             num += 7
+        Result.objects.create(
+            questionnaire = instance,
+        )
         instance.save()
 
 #need day_in_habit to be determined by the date and auto generated
@@ -210,3 +216,12 @@ def week_logs(sender, instance, created, *args, **kwargs):
         object = WeekLog.objects.get(id=instance.id)
         for record in records:
             object.records.add(record)
+
+@receiver(post_save, sender=Result)
+def result_logs(sender, instance, created, *args, **kwargs):
+    if created:
+        records = Record.objects.filter(week_reflection__questionnaire = instance.questionnaire)
+        object = Result.objects.get(id=instance.id)
+        for record in records:
+            object.habit_log.add(record)
+

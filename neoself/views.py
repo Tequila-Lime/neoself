@@ -138,6 +138,20 @@ class WeekLogView(generics.ListAPIView):
         queryset = WeekLog.objects.filter(questionnaire__user=self.request.user, date__range=(first, today)).order_by('-date')
         return queryset
 
+class ResultsView(generics.ListAPIView):
+    queryset = Result.objects.all()
+    serializer_class = ResultSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        queryset = Result.objects.filter(questionnaire__user=self.request.user)
+        return queryset
+
+class ResultsDetail(generics.RetrieveAPIView):
+    queryset = Result.objects.all()
+    serializer_class = ResultSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
 class FriendDetail(generics.RetrieveUpdateDestroyAPIView):
     '''
     Allows user to view friend detail as well as delete the relationship.
