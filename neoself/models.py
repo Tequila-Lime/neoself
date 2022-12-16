@@ -37,7 +37,7 @@ class Questionnaire(models.Model):
     metric_baseline = models.IntegerField(default=0)
     goal_label = models.CharField(max_length=50)
     goal_metric = models.IntegerField(default=0)
-    opt_in = models.BooleanField(default=True)
+    opt_in = models.BooleanField(default=False)
     cue_question_1 = models.TextField(max_length=1000)
     cue_question_2 = models.TextField(max_length=1000)
     cue_question_3 = models.TextField(max_length=1000)
@@ -61,6 +61,7 @@ class Reflection(models.Model):
     metric_baseline = models.IntegerField(default=0)
     goal_metric = models.IntegerField(default=0)
     date = models.DateField(default=date.today)
+    notif_time = models.TimeField(null=True, blank=True) 
 
     def __str__(self):
         return f"reflection on {self.questionnaire} on {self.date}"
@@ -110,7 +111,7 @@ class Result(models.Model):
 
 class Notification(models.Model):
     habit = models.ForeignKey(Questionnaire, on_delete=models.CASCADE, null=True, blank=True)
-    time = models.CharField(max_length=50)
+    time = models.TimeField(null=True,blank=True)
     message = models.CharField(max_length=300)
 
     def __str__(self):
@@ -166,6 +167,11 @@ def save_reflection(sender,instance,created, *args, **kwargs):
         Result.objects.create(
             questionnaire = instance,
         )
+        if instance.opt_in == True:
+            Notification.objects.create(
+                habit = instance,
+                message = f"Make sure to {instance.habit_name} today"
+            )
         instance.save()
 
 #need day_in_habit to be determined by the date and auto generated
@@ -216,6 +222,9 @@ def all_habit_records(sender, instance, created, *args, **kwargs):
             
             added_day+=timedelta(days=1)
             count+=1
+        Notification.objects.filter(habit=instance.questionnaire).update(
+            time=instance.notif_time
+        )
         instance.save()
 
 @receiver(post_save, sender=Record)
@@ -243,3 +252,9 @@ def result_logs(sender, instance, created, *args, **kwargs):
         for record in records:
             object.habit_log.add(record)
 
+@receiver(post_save, sender=Notification)
+def reflect_get_alert_time(sender, instance, created, *args, **kwargs):
+    if not created:
+        Reflection.objects.filter(questionnaire=instance.habit).update(
+            notif_time= instance.time
+        )
