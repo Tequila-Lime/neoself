@@ -176,7 +176,6 @@ class UserAvatarView(generics.UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     parser_classes = [parsers.FileUploadParser]
-    permission_classes = [IsAuthenticated]
 
     def get_object(self):
         #return User.objects.first()
