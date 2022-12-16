@@ -139,6 +139,9 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR/ "media"
+
 if not DEBUG: 
     STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
@@ -170,18 +173,12 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
     'content-disposition',
 ]
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR/ "media"
-
 DJOSER = {
     'SERIALIZERS': {
         'current_user': 'api.serializers.UserSerializer',
     },
 }
 
-STATIC_ROOT = BASE_DIR / "staticfiles" # <-- add this
-
-# add the following lines
 
 if env('USE_S3'):
     # These are necessary for AWS / make sure these are set in production as well
