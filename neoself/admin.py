@@ -2,8 +2,12 @@ from django.contrib import admin
 from .models import User,Questionnaire,Reflection,Record,Result,Notification,Friend,Badge, WeekLog
 from django.contrib.auth.admin import UserAdmin
 
-
+class CustomUserAdmin(UserAdmin):
+    model = User
+    list_display = ['id','username','full_name','bio','created_at', 'avatar']
 # Register your models here.
+
+
 admin.site.register(User, UserAdmin)
 admin.site.register(Questionnaire)
 admin.site.register(Reflection)
