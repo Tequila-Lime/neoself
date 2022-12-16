@@ -180,3 +180,8 @@ class UserAvatarView(generics.UpdateAPIView):
     def get_object(self):
         #return User.objects.first()
         return self.request.user
+    
+    def get_parsers(self):
+        if self.request.FILES:
+            self.parser_classes.append(parsers.FileUploadParser)
+        return [parser() for parser in self.parser_classes]
