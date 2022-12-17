@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import User,Questionnaire,Reflection,Record,Result,Notification,Friend,Badge,WeekLog 
-from .serializers import UserSerializer,QuestionnaireSerializer,ReflectionSerializer,RecordSerializer,WeekLogSerializer,ResultSerializer,NotificationSerializer,FriendSerializer 
+from .models import User,Questionnaire,Reflection,Record,Result,Notification,Friend,Badge,WeekLog, Reaction 
+from .serializers import UserSerializer,QuestionnaireSerializer,ReflectionSerializer,RecordSerializer,WeekLogSerializer,ResultSerializer,NotificationSerializer,FriendSerializer, ReactionSerializer 
 from rest_framework import generics, status, parsers
 from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
@@ -185,3 +185,13 @@ class UserAvatarView(generics.UpdateAPIView):
         if self.request.FILES:
             self.parser_classes.append(parsers.FileUploadParser)
         return [parser() for parser in self.parser_classes]
+
+class ReactionView(generics.ListCreateAPIView):
+    queryset = Reaction.objects.all()
+    serializer_class = ReactionSerializer
+    permission_classes = []
+
+class ReactionDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Reaction.objects.all()
+    serializer_class = ReactionSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]

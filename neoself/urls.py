@@ -21,6 +21,8 @@ urlpatterns = [
     path('weeklogs/', views.WeekLogView.as_view(), name="week-logs"),
     path('results/', views.ResultsView.as_view(), name='results'),
     path('results/<int:pk>/',views.ResultsDetail.as_view(), name="results-detail"),
+    path('reaction/',views.ReactionView.as_view(), name='record-reactions'),
+    path('reaction/<int:pk>/', views.ReactionDetail.as_view(), name='reaction-detail'),
 ]
 
 if settings.DEBUG: 

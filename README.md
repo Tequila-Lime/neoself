@@ -14,7 +14,9 @@ https://neoself-be-service.onrender.com
 |reflection/int:pk/ | see the details for an individual reflection | GET, PUT |
 |record/user/| be able to see all the users own records | GET, POST |
 |record/friends/| see all friends most recent records that are public | GET |
-|record/int:pk| be able to look at an individual record | GET, PUT|
+|record/int:pk/| be able to look at an individual record | GET, PUT|
+|reaction/| able to see reaction to every record by every user | GET, CREATE |
+|reaction/int:pk/| able to see individual reaction to a record from particular user | GET, PUT, DELETE|
 |weeklogs/| able to see all the records for a particular week for a particular habit | GET |
 |results/| see all results for a user | GET |
 |results/int:pk/| see details on one result for user | GET |
