@@ -16,6 +16,7 @@ django-storages = "*"
 pillow = "*"
 djoser = "*"
 django-cors-headers = "*"
+django-filter = "*"
 
 [dev-packages]
 

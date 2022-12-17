@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from .models import User,Questionnaire,Reflection,Record,Result,Notification,Friend,Badge,WeekLog, Reaction 
-from .serializers import UserSerializer,QuestionnaireSerializer,ReflectionSerializer,RecordSerializer,WeekLogSerializer,ResultSerializer,NotificationSerializer,FriendSerializer, ReactionSerializer 
-from rest_framework import generics, status, parsers
+from .serializers import UserSerializer,QuestionnaireSerializer,ReflectionSerializer,RecordSerializer,WeekLogSerializer,ResultSerializer,NotificationSerializer,FriendSerializer, ReactionSerializer
+from rest_framework import generics, status, parsers, filters
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
-
+from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
 from django.contrib.postgres.search import SearchVector,SearchQuery,SearchRank
 from django.db import IntegrityError
@@ -125,8 +127,30 @@ class FriendView(generics.ListCreateAPIView):
     '''
     queryset = Friend.objects.all()
     serializer_class = FriendSerializer
+    filter_backends = [filters.SearchFilter,filters.OrderingFilter]
+    ordering_fields = ['created_at']
+    search_fields = ['friend']
     permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        queryset = Friend.objects.filter(current_user=self.request.user.pk)
+        return queryset
+    def perform_create(self, serializer):
+        serializer.save(current_user=self.request.user)
+    def create(self, request, *args, **kwargs):
+        try:
+            return super().create(request, *args, **kwargs)
+        except IntegrityError:
+            error_data = {
+                "error": "You are already following this user."
+            }
+            return Response(error_data, status=status.HTTP_400_BAD_REQUEST)
+
+class FriendDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Friend.objects.all()
+    serializer_class = FriendSerializer
+    permission_classes = [IsAuthenticated]
+    
 class WeekLogView(generics.ListAPIView):
     queryset = WeekLog.objects.all()
     serializer_class = WeekLogSerializer
@@ -151,26 +175,6 @@ class ResultsDetail(generics.RetrieveAPIView):
     queryset = Result.objects.all()
     serializer_class = ResultSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-
-class FriendDetail(generics.RetrieveUpdateDestroyAPIView):
-    '''
-    Allows user to view friend detail as well as delete the relationship.
-    '''
-    queryset = Friend.objects.all()
-    serializer_class = FriendSerializer
-    permission_classes = [IsAuthenticated]
-
-class FriendSearchView(generics.ListCreateAPIView):
-    pass
-    '''
-    queryset = Friend.objects.all().filter('friend')
-    serializer_class = FriendSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        queryset = Friend.objects.filter(friend=self.request.user)
-        return queryset
-    '''
 
 class UserAvatarView(generics.UpdateAPIView):
     queryset = User.objects.all()

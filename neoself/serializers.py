@@ -46,10 +46,17 @@ class NotificationSerializer(serializers.ModelSerializer):
         fields = ('id','habit','time','message')
 
 class FriendSerializer(serializers.ModelSerializer):
-
+    friend = serializers.SlugRelatedField(slug_field='username', read_only=True)
     class Meta:
         model = Friend
-        fields = ('id','current_user','friend','created_at')
+        fields = ('id','friend','created_at')
+
+# class FriendSearchSerializer(serializers.ModelSerializer):
+#     friend= serializers.SerializerMethodField()
+    
+#     class Meta:
+#         model = User
+#         fields = ('friend','username','full_name')
 
 class WeekLogSerializer(serializers.ModelSerializer):
     class Meta:
