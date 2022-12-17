@@ -8,6 +8,7 @@ https://neoself-be-service.onrender.com
 |---|-----------|-------|
 |user/| User can view there own profile info | GET |
 |user/self/| User is able to edit their profile info and delete profile if they so choose | GET, PUT, DELETE |
+|user/search/| Search users by username/first name/last name | GET |
 |questionnaire/| this shows all questionnaires a user has filled out as well as letting them to create more| GET, POST |
 |questionnaire/int:pk/| This shows an individual questionnaire filled out | GET |
 |reflection/| see all reflections for a particular user | GET, POST |
@@ -23,3 +24,6 @@ https://neoself-be-service.onrender.com
 |friends/| able to see friends profiles | GET, POST|
 |friends/int:pk/| to see a specific friend | GET, DELETE, PUT |
 |friends/search/| search for your friends | GET, POST |
+|auth/users/me/avatar/| add avatar to user | PATCH |
+|auth/token/login/| login established user & create auth token | POST |
+|auth/token/logout/| logout established user & destroy auth token | POST |
