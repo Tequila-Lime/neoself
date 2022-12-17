@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from datetime import date
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete
 from django.shortcuts import get_object_or_404
 from django.dispatch import receiver
 import datetime
@@ -96,6 +96,9 @@ class Reaction(models.Model):
     record=models.ForeignKey(Record, on_delete=models.CASCADE)
     commentor = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     gif_url = models.CharField(max_length=500,blank=True, null=True) 
+
+    def __str__(self):
+        return f"{self.commentor.full_name} liked {self.record.week_reflection.questionnaire.habit_name} record"
 
 # A model that gets all the data for the week so we can give a summary
 class WeekLog(models.Model):
@@ -264,3 +267,19 @@ def reflect_get_alert_time(sender, instance, created, *args, **kwargs):
         Reflection.objects.filter(questionnaire=instance.habit).update(
             notif_time= instance.time
         )
+
+@receiver(post_save, sender=Reaction)
+def add_like_count(sender,instance,created,*args,**kwargs):
+    if created:
+        likes = Record.objects.get(id=instance.record.id)
+        Record.objects.filter(id=instance.record.id).update(
+            likes_num = likes.likes_num + 1
+        )
+
+@receiver(pre_delete, sender=Reaction)
+def subtract_like_count(sender, instance, using, *args, **kwargs):
+    likes = Record.objects.get(id=instance.record.id)
+    Record.objects.filter(id=instance.record.id).update(
+        likes_num = likes.likes_num - 1
+    )
+
