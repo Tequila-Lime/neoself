@@ -95,6 +95,7 @@ class Record(models.Model):
 class Reaction(models.Model):
     record=models.ForeignKey(Record, on_delete=models.CASCADE)
     commentor = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    gif_url = models.CharField(max_length=500,blank=True, null=True) 
 
 # A model that gets all the data for the week so we can give a summary
 class WeekLog(models.Model):
