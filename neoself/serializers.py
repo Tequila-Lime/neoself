@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User,Questionnaire,Reflection,Record,Result,Notification,Friend,Badge,WeekLog
+from .models import User,Questionnaire,Reflection,Record,Result,Notification,Friend,Badge,WeekLog, Reaction
 
 class UserSerializer(serializers.ModelSerializer):
     
@@ -31,7 +31,7 @@ class RecordSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Record
-        fields = ('id','week_reflection','daily_record','cue_dh','craving_dh','response_dh','comment_dh','date','public','filled_in')
+        fields = ('id','week_reflection','daily_record','cue_dh','craving_dh','response_dh','comment_dh','date','public','filled_in','likes_num')
 
 class ResultSerializer(serializers.ModelSerializer):
 
@@ -52,6 +52,11 @@ class FriendSerializer(serializers.ModelSerializer):
         fields = ('id','current_user','friend','created_at')
 
 class WeekLogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WeekLog
+        fields = '__all__'
+
+class ReactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = WeekLog
         fields = '__all__'

@@ -82,6 +82,7 @@ class Record(models.Model):
     date = models.DateField(default=date.today)
     filled_in = models.BooleanField(default=False)
     public = models.BooleanField(default=True)
+    likes_num = models.IntegerField(default=0)
 
     def __str__(self):
         return f"record on {self.date} for {self.week_reflection}"
@@ -90,6 +91,10 @@ class Record(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['date', 'week_reflection'], name='unique_record')
         ]
+
+class Reaction(models.Model):
+    record=models.ForeignKey(Record, on_delete=models.CASCADE)
+    commentor = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
 # A model that gets all the data for the week so we can give a summary
 class WeekLog(models.Model):
