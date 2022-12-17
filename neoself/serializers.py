@@ -58,5 +58,5 @@ class WeekLogSerializer(serializers.ModelSerializer):
 
 class ReactionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = WeekLog
+        model = Reaction
         fields = '__all__'
