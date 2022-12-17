@@ -28,7 +28,7 @@ class UserView(generics.ListAPIView):
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_object(self):
         return self.request.user
@@ -37,7 +37,7 @@ class UserSearchList(generics.ListAPIView):
     model = User
     context_object_name = "quotes"
     serializer_class= UserSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     
     def get_queryset(self):
         query = self.request.GET.get("q")
