@@ -66,7 +66,7 @@ class QuestionnaireDetail(generics.RetrieveAPIView):
     serializer_class = QuestionnaireSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-class RecordView(generics.ListCreateAPIView):
+class RecordView(generics.ListAPIView):
     queryset = Record.objects.all()
     serializer_class = RecordSerializer
     permission_classes = [IsAuthenticated]
@@ -77,6 +77,17 @@ class RecordView(generics.ListCreateAPIView):
         queryset = Record.objects.filter(week_reflection__questionnaire__user=self.request.user, date__range=(first, today)).order_by('-date')
         return queryset
 # Try to make a record view that seperates habit
+
+class RecordAllView(generics.ListAPIView):
+    queryset = Record.objects.all()
+    serializer_class = RecordSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        first = date(2000,5,17)
+        today = date.today()
+        queryset = Record.objects.filter(public=True,filled_in = True,date__range=(first, today)).order_by('-date')
+        return queryset
 
 class FriendRecordView(generics.ListAPIView):
     queryset = Record.objects.all()
@@ -113,7 +124,7 @@ class ReflectionView(generics.ListCreateAPIView):
         queryset = Reflection.objects.filter(questionnaire__user=self.request.user)
         return queryset
 
-class ReflectionDetail(generics.RetrieveUpdateAPIView):
+class ReflectionDetail(generics.RetrieveAPIView):
     '''
     Allows user to view reflection detail. Eventually there should be a time constraint on when a user is able to update
     '''

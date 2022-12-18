@@ -15,6 +15,7 @@ urlpatterns = [
     path('friends/', views.FriendView.as_view(), name="friend"),
     path('friends/<int:pk>/', views.FriendDetail.as_view(), name="friend-detail"),
     path('record/user/', views.RecordView.as_view(), name='user-records'),
+    path('record/all/', views.RecordAllView.as_view(), name="all-records"),
     path('record/<int:pk>/', views.RecordDetail.as_view(), name='record-detail'),
     path('record/friends/', views.FriendRecordView.as_view(), name='friends-record'),
     path('weeklogs/', views.WeekLogView.as_view(), name="week-logs"),

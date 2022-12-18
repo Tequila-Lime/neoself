@@ -11,13 +11,14 @@ https://neoself-be-service.onrender.com
 |user/search/| Search users by username/first name/last name | GET | x |
 |questionnaire/| this shows all questionnaires a user has filled out as well as letting them to create more| GET, POST | x |
 |questionnaire/int:pk/| This shows an individual questionnaire filled out | GET | x | 
-|reflection/| see all reflections for a particular user | GET, POST | |
-|reflection/int:pk/ | see the details for an individual reflection | GET, PUT | |
-|record/user/| be able to see all the users own records | GET, POST | |
-|record/friends/| see all friends most recent records that are public | GET | |
-|record/int:pk/| be able to look at an individual record | GET, PUT| |
-|reaction/| able to see reaction to every record by every user | GET, CREATE | |
-|reaction/int:pk/| able to see individual reaction to a record from particular user | GET, PUT, DELETE| |
+|reflection/| see all reflections for a particular user | GET, POST | x |
+|reflection/int:pk/ | see the details for an individual reflection | GET | x |
+|record/user/| be able to see all the users own records | GET | x |
+|record/all/| get all records for everyone | GET | X |
+|record/friends/| see all friends most recent records that are public | GET | X |
+|record/int:pk/| be able to look at an individual record | GET, PUT| x |
+|reaction/| able to see reaction to every record by every user | GET, POST | x |
+|reaction/int:pk/| able to see individual reaction to a record from particular user | GET, PUT, DELETE| x |
 |weeklogs/| able to see all the records for a particular week for a particular habit | GET | |
 |results/| see all results for a user | GET | |
 |results/int:pk/| see details on one result for user | GET | |
@@ -240,7 +241,6 @@ Username and password are required fields.
 
 GET <BASE_URL>/questionnaire/int:pk
 
-for POST only
 ```json
 ```
 
@@ -268,4 +268,269 @@ for POST only
 		"signature": "Bruce Lee"
 	}
 ]
+```
+
+## Reflection endpoints
+
+### To get and create reflections
+
+#### request:
+Username and password are required fields.
+
+GET, POST <BASE_URL>/reflection/
+
+for POST only
+```json
+[
+	{
+		"id": 191,
+		"questionnaire": 159,
+		"cue_question_1": "IsAuthenticatedOrReadOnly",
+		"cue_question_2": "IsAuthenticatedOrReadOnly",
+		"cue_question_3": "IsAuthenticatedOrReadOnly",
+		"craving_question_1": "IsAuthenticatedOrReadOnly",
+		"response_question_1": "IsAuthenticatedOrReadOnly",
+		"response_question_2": "IsAuthenticatedOrReadOnly",
+		"date": "2022-12-01",
+		"metric_baseline": 0,
+		"goal_metric": 0
+	}
+]
+```
+
+### response:
+```json
+[
+	{
+		"id": 191,
+		"questionnaire": 159,
+		"cue_question_1": "IsAuthenticatedOrReadOnly",
+		"cue_question_2": "IsAuthenticatedOrReadOnly",
+		"cue_question_3": "IsAuthenticatedOrReadOnly",
+		"craving_question_1": "IsAuthenticatedOrReadOnly",
+		"response_question_1": "IsAuthenticatedOrReadOnly",
+		"response_question_2": "IsAuthenticatedOrReadOnly",
+		"date": "2022-12-01",
+		"metric_baseline": 0,
+		"goal_metric": 0
+	}
+]
+```
+
+### To get individual reflection
+
+#### request:
+Username and password are required fields.
+
+GET <BASE_URL>/reflection/int:pk
+
+```json
+```
+
+### response:
+```json
+[
+	{
+		"id": 191,
+		"questionnaire": 159,
+		"cue_question_1": "IsAuthenticatedOrReadOnly",
+		"cue_question_2": "IsAuthenticatedOrReadOnly",
+		"cue_question_3": "IsAuthenticatedOrReadOnly",
+		"craving_question_1": "IsAuthenticatedOrReadOnly",
+		"response_question_1": "IsAuthenticatedOrReadOnly",
+		"response_question_2": "IsAuthenticatedOrReadOnly",
+		"date": "2022-12-01",
+		"metric_baseline": 0,
+		"goal_metric": 0
+	}
+]
+```
+
+## Record endpoints
+
+### To get all of individual records and update records
+
+#### request:
+Username and password are required fields.
+
+GET, POST <BASE_URL>/record/user/
+
+```json
+
+```
+
+### response:
+```json
+[
+	{
+		"id": 1818,
+		"week_reflection": 191,
+		"daily_record": 0,
+		"cue_dh": false,
+		"craving_dh": false,
+		"response_dh": false,
+		"comment_dh": "False",
+		"date": "2022-12-18",
+		"public": true,
+		"filled_in": false,
+		"likes_num": 0
+	}
+]
+```
+
+### To get all records created that are filled_in and made today or before
+
+#### request:
+Username and password are required fields.
+
+GET <BASE_URL>/record/all/
+
+```json
+
+```
+
+### response:
+```json
+[
+	{
+		"id": 1818,
+		"week_reflection": 191,
+		"daily_record": 0,
+		"cue_dh": false,
+		"craving_dh": false,
+		"response_dh": false,
+		"comment_dh": "False",
+		"date": "2022-12-18",
+		"public": true,
+		"filled_in": false,
+		"likes_num": 0
+	}
+]
+```
+
+### To get all friends records that are filled_in
+
+#### request:
+Username and password are required fields.
+
+GET <BASE_URL>/record/all/
+
+```json
+
+```
+
+### response:
+```json
+[
+	{
+		"id": 1818,
+		"week_reflection": 191,
+		"daily_record": 0,
+		"cue_dh": false,
+		"craving_dh": false,
+		"response_dh": false,
+		"comment_dh": "False",
+		"date": "2022-12-18",
+		"public": true,
+		"filled_in": false,
+		"likes_num": 0
+	}
+]
+```
+### To get detail of individual record
+
+#### request:
+Username and password are required fields.
+
+GET, PUT <BASE_URL>/record/int:pk/
+
+for PUT can update one or all
+```json
+{
+	"daily_record": 30,
+	"cue_dh": false,
+	"craving_dh": true,
+	"response_dh": false,
+	"comment_dh": "False",
+	"date": "2022-12-18",
+	"public": true,
+	"filled_in": false
+}
+```
+
+### response:
+```json
+{
+	"id": 1818,
+	"week_reflection": 191,
+	"daily_record": 30,
+	"cue_dh": false,
+	"craving_dh": true,
+	"response_dh": false,
+	"comment_dh": "False",
+	"date": "2022-12-18",
+	"public": true,
+	"filled_in": false,
+	"likes_num": 0
+}
+```
+
+## Reactions (record responses)
+
+### To get all reactions made 
+
+#### request:
+Username and password are required fields.
+
+GET, POST <BASE_URL>/reaction/
+
+for POST only
+```json
+{
+    "gif_url": "",
+    "record": 1816 ,
+    "commentor": 3
+}
+```
+
+### response:
+```json
+[
+	{
+		"id": 7,
+		"gif_url": "sick",
+		"record": 1816,
+		"commentor": 3
+	},
+	{
+		"id": 8,
+		"gif_url": "sick",
+		"record": 1816,
+		"commentor": 2
+	}
+]
+```
+
+### To get individual reaction
+
+#### request:
+Username and password are required fields.
+
+GET, PUT, DELETE <BASE_URL>/reaction/int:pk/
+
+for PUT 
+```json
+{
+    "gif_url": "sick",
+}
+```
+
+### response:
+```json
+{
+	"id": 7,
+	"gif_url": "sick",
+	"record": 1816,
+	"commentor": 3
+}
 ```
