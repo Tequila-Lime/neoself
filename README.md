@@ -19,12 +19,14 @@ https://neoself-be-service.onrender.com
 |record/int:pk/| be able to look at an individual record | GET, PUT| x |
 |reaction/| able to see reaction to every record by every user | GET, POST | x |
 |reaction/int:pk/| able to see individual reaction to a record from particular user | GET, PUT, DELETE| x |
-|weeklogs/| able to see all the records for a particular week for a particular habit | GET | |
-|results/| see all results for a user | GET | |
-|results/int:pk/| see details on one result for user | GET | |
-|friends/| able to see friends profiles | GET, POST| |
-|friends/int:pk/| to see a specific friend | GET, DELETE, PUT | |
-|friends/search/| search for your friends | GET, POST | |
+|weeklogs/| able to see all the records for a particular habit for a particular user | GET | x |
+|weeklogs/int:pk/| able to see a specific weeklog detail | GET | x |
+|results/| see all results for a user | GET | x |
+|results/all/| see all records | GET | x |
+|results/int:pk/| see details on one result for user | GET | x |
+|friends/| able to see friends profiles | GET, POST| x |
+|friends/int:pk/| to see a specific friend | GET, DELETE, PUT | x |
+|friends/search/| search for your friends | GET, POST | x |
 |auth/users/me/avatar/| add avatar to user | PATCH | |
 |auth/token/login/| login established user & create auth token | POST | x |
 |auth/token/logout/| logout established user & destroy auth token | POST | x |
@@ -475,7 +477,7 @@ for PUT can update one or all
 }
 ```
 
-## Reactions (record responses)
+## Reactions endpoints (record responses)
 
 ### To get all reactions made 
 
@@ -532,5 +534,212 @@ for PUT
 	"gif_url": "sick",
 	"record": 1816,
 	"commentor": 3
+}
+```
+
+## Weeklogs endpoints
+
+### To get users week logs for a habit
+
+#### request:
+Username and password are required fields.
+
+GET <BASE_URL>/weeklogs/
+
+```json
+```
+
+note records attribute will show records detail
+### response:
+```json
+[
+	{
+		"id": 113,
+		"date": "2022-12-14",
+		"day": 14,
+		"questionnaire": 159,
+		"records": [
+			1817
+		]
+	},
+	{
+		"id": 112,
+		"date": "2022-12-07",
+		"day": 7,
+		"questionnaire": 159,
+		"records": [
+			1816
+		]
+	}
+]
+```
+
+### To detail on particular detail
+
+#### request:
+Username and password are required fields.
+
+GET <BASE_URL>/weeklogs/int:pk/
+
+```json
+```
+
+note records attribute "records" will show records detail and not just id
+### response:
+```json
+{
+	"id": 113,
+	"date": "2022-12-14",
+	"day": 14,
+	"questionnaire": 159,
+	"records": [
+		1817
+	]
+}
+```
+
+## Results endpoints
+
+### See all results for a user in habit
+
+#### request:
+Username and password are required fields.
+
+GET <BASE_URL>/results/
+
+```json
+```
+
+note habit log will show record info and not just id
+### response:
+```json
+[
+	{
+		"id": 14,
+		"questionnaire": 159,
+		"habit_log": [
+			1817,
+			1816,
+			1818,
+			1819
+		],
+		"success": false
+	}
+]
+```
+
+## Results endpoints
+
+### Detail for results of habit
+
+#### request:
+Username and password are required fields.
+
+GET <BASE_URL>/results/int:pk/
+
+```json
+```
+
+note habit log will show record info and not just id
+### response:
+```json
+{
+	"id": 14,
+	"questionnaire": 159,
+	"habit_log": [
+		1817,
+		1816,
+		1818,
+		1819
+	],
+	"success": false
+}
+```
+### Get all results for everyone
+
+#### request:
+Username and password are required fields.
+
+GET <BASE_URL>/results/all/
+
+```json
+```
+
+note habit log will show record info and not just id
+### response:
+```json
+{
+	"id": 14,
+	"questionnaire": 159,
+	"habit_log": [
+		1817,
+		1816,
+		1818,
+		1819
+	],
+	"success": false
+}
+```
+
+## Friends endpoints 
+
+
+### View all of users friends
+
+#### request:
+Username and password are required fields.
+
+GET,POST <BASE_URL>/friends/
+
+for POST only
+```json
+```
+
+### response:
+```json
+{
+	"id": 1,
+	"friend": "user1",
+	"created_at": "2022-12-12T20:30:21.029470Z"
+}
+```
+
+### View individual friend detail
+
+#### request:
+Username and password are required fields.
+
+GET,DELETE, PUT <BASE_URL>/friends/int:pk/
+
+```json
+```
+
+### response:
+```json
+{
+	"id": 1,
+	"friend": "user1",
+	"created_at": "2022-12-12T20:30:21.029470Z"
+}
+```
+
+### To search friends
+
+DOESN'T EXIST RIGHT NOW
+
+#### request:
+Username and password are required fields.
+
+GET <BASE_URL>/friends/search/
+
+```json
+```
+
+### response:
+```json
+{
+	"id": 1,
+	"friend": "user1",
+	"created_at": "2022-12-12T20:30:21.029470Z"
 }
 ```
