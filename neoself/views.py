@@ -173,6 +173,11 @@ class WeekLogView(generics.ListAPIView):
         queryset = WeekLog.objects.filter(questionnaire__user=self.request.user, date__range=(first, today)).order_by('-date')
         return queryset
 
+class WeekLogDetail(generics.RetrieveAPIView):
+    queryset = WeekLog.objects.all()
+    serializer_class = WeekLogSerializer
+    permission_classes = [IsAuthenticated]
+
 class ResultsView(generics.ListAPIView):
     queryset = Result.objects.all()
     serializer_class = ResultSerializer
@@ -181,6 +186,11 @@ class ResultsView(generics.ListAPIView):
     def get_queryset(self):
         queryset = Result.objects.filter(questionnaire__user=self.request.user)
         return queryset
+
+class ResultsAllView(generics.ListAPIView):
+    queryset = Result.objects.all()
+    serializer_class = ResultSerializer
+    permission_classes = []
 
 class ResultsDetail(generics.RetrieveAPIView):
     queryset = Result.objects.all()
