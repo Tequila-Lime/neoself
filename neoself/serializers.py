@@ -25,7 +25,7 @@ class ReflectionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Reflection
-        fields = ('id','questionnaire','cue_question_1','cue_question_2','cue_question_3','craving_question_1','response_question_1','response_question_2','date')
+        fields = ('id','questionnaire','cue_question_1','cue_question_2','cue_question_3','craving_question_1','response_question_1','response_question_2','date', 'metric_baseline','goal_metric')
 
 class RecordSerializer(serializers.ModelSerializer):
 
@@ -47,9 +47,15 @@ class NotificationSerializer(serializers.ModelSerializer):
 
 class FriendSerializer(serializers.ModelSerializer):
     friend = serializers.SlugRelatedField(slug_field='username', read_only=True)
+    current_user = serializers.SlugRelatedField(slug_field='username', read_only=True)
     class Meta:
         model = Friend
-        fields = ('id','friend','created_at')
+        fields = ('id','friend','created_at','current_user')
+
+class FriendPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Friend
+        fields = '__all__'
 
 # class FriendSearchSerializer(serializers.ModelSerializer):
 #     friend= serializers.SerializerMethodField()

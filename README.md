@@ -25,6 +25,7 @@ https://neoself-be-service.onrender.com
 |results/all/| see all records | GET | x |
 |results/int:pk/| see details on one result for user | GET | x |
 |friends/| able to see friends profiles | GET, POST| x |
+|friends/all/| able to view all friend relationships | GET | x |
 |friends/int:pk/| to see a specific friend | GET, DELETE, PUT | x |
 |friends/search/| search for your friends | GET, POST | x |
 |auth/users/me/avatar/| add avatar to user | PATCH | |
@@ -693,6 +694,11 @@ GET,POST <BASE_URL>/friends/
 
 for POST only
 ```json
+
+{
+	"friend": "user1",
+}
+
 ```
 
 ### response:
@@ -704,7 +710,30 @@ for POST only
 }
 ```
 
+
+### View all friend relationships
+
+#### request:
+Username and password are required fields.
+
+GET <BASE_URL>/friends/all/
+
+for POST only
+```json
+```
+
+### response:
+```json
+{
+	"id": 1,
+	"friend": "user1",
+	"created_at": "2022-12-12T20:30:21.029470Z"
+}
+```
+
+
 ### View individual friend detail
+
 
 #### request:
 Username and password are required fields.
@@ -723,26 +752,6 @@ GET,DELETE, PUT <BASE_URL>/friends/int:pk/
 }
 ```
 
-### To search friends
-
-DOESN'T EXIST RIGHT NOW
-
-#### request:
-Username and password are required fields.
-
-GET <BASE_URL>/friends/search/
-
-```json
-```
-
-### response:
-```json
-{
-	"id": 1,
-	"friend": "user1",
-	"created_at": "2022-12-12T20:30:21.029470Z"
-}
-```
 
 ### Add an avatar to a User:
 
@@ -768,5 +777,24 @@ PATCH  <BASE_URL>/auth/users/me/avatar/
 	"bio": "",
 	"created_at": "2022-12-14T15:04:18.496336Z",
 	"avatar": "http://127.0.0.1:8000/media/user_avatars/flounder_2TBjzYv.jpeg"
+
+### To search friends
+
+DOESN'T EXIST RIGHT NOW
+
+#### request:
+Username and password are required fields.
+
+GET <BASE_URL>/friends/search/
+
+```json
+```
+
+### response:
+```json
+{
+	"id": 1,
+	"friend": "user1",
+	"created_at": "2022-12-12T20:30:21.029470Z"
 }
 ```

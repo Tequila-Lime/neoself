@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import User,Questionnaire,Reflection,Record,Result,Notification,Friend,Badge,WeekLog, Reaction 
-from .serializers import UserSerializer,QuestionnaireSerializer,ReflectionSerializer,RecordSerializer,WeekLogSerializer,ResultSerializer,NotificationSerializer,FriendSerializer, ReactionSerializer
+from .serializers import UserSerializer,QuestionnaireSerializer,ReflectionSerializer,RecordSerializer,WeekLogSerializer,ResultSerializer,NotificationSerializer,FriendSerializer, ReactionSerializer, FriendPostSerializer
 from rest_framework import generics, status, parsers, filters
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -28,7 +28,7 @@ class UserView(generics.ListAPIView):
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_object(self):
         return self.request.user
@@ -37,7 +37,7 @@ class UserSearchList(generics.ListAPIView):
     model = User
     context_object_name = "quotes"
     serializer_class= UserSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     
     def get_queryset(self):
         query = self.request.GET.get("q")
@@ -66,7 +66,7 @@ class QuestionnaireDetail(generics.RetrieveAPIView):
     serializer_class = QuestionnaireSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-class RecordView(generics.ListCreateAPIView):
+class RecordView(generics.ListAPIView):
     queryset = Record.objects.all()
     serializer_class = RecordSerializer
     permission_classes = [IsAuthenticated]
@@ -77,6 +77,17 @@ class RecordView(generics.ListCreateAPIView):
         queryset = Record.objects.filter(week_reflection__questionnaire__user=self.request.user, date__range=(first, today)).order_by('-date')
         return queryset
 # Try to make a record view that seperates habit
+
+class RecordAllView(generics.ListAPIView):
+    queryset = Record.objects.all()
+    serializer_class = RecordSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        first = date(2000,5,17)
+        today = date.today()
+        queryset = Record.objects.filter(public=True,filled_in = True,date__range=(first, today)).order_by('-date')
+        return queryset
 
 class FriendRecordView(generics.ListAPIView):
     queryset = Record.objects.all()
@@ -113,7 +124,7 @@ class ReflectionView(generics.ListCreateAPIView):
         queryset = Reflection.objects.filter(questionnaire__user=self.request.user)
         return queryset
 
-class ReflectionDetail(generics.RetrieveUpdateAPIView):
+class ReflectionDetail(generics.RetrieveAPIView):
     '''
     Allows user to view reflection detail. Eventually there should be a time constraint on when a user is able to update
     '''
@@ -122,6 +133,37 @@ class ReflectionDetail(generics.RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticated] 
 
 class FriendView(generics.ListCreateAPIView):
+    queryset = Friend.objects.all()
+    serializer_class = FriendPostSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        queryset = Friend.objects.filter(Q(current_user=self.request.user.id) | Q(friend=self.request.user))
+        return queryset
+
+    def perform_create(self, serializer):
+        serializer.save(current_user=self.request.user)
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return FriendSerializer
+        return self.serializer_class
+
+    def create(self, request, *args, **kwargs):
+        try:
+            return super().create(request, *args, **kwargs)
+        except IntegrityError:
+            error_data = {
+                "error": "You are already friends with this user."
+            }
+            return Response(error_data, status=status.HTTP_400_BAD_REQUEST)
+
+class FriendAllView(generics.ListAPIView):
+    queryset = Friend.objects.all()
+    serializer_class = FriendSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+class FriendSearchView(generics.ListCreateAPIView):
     '''
     Allows user to view friends list as well as add an a new friend.
     '''
@@ -162,6 +204,11 @@ class WeekLogView(generics.ListAPIView):
         queryset = WeekLog.objects.filter(questionnaire__user=self.request.user, date__range=(first, today)).order_by('-date')
         return queryset
 
+class WeekLogDetail(generics.RetrieveAPIView):
+    queryset = WeekLog.objects.all()
+    serializer_class = WeekLogSerializer
+    permission_classes = [IsAuthenticated]
+
 class ResultsView(generics.ListAPIView):
     queryset = Result.objects.all()
     serializer_class = ResultSerializer
@@ -170,6 +217,11 @@ class ResultsView(generics.ListAPIView):
     def get_queryset(self):
         queryset = Result.objects.filter(questionnaire__user=self.request.user)
         return queryset
+
+class ResultsAllView(generics.ListAPIView):
+    queryset = Result.objects.all()
+    serializer_class = ResultSerializer
+    permission_classes = []
 
 class ResultsDetail(generics.RetrieveAPIView):
     queryset = Result.objects.all()

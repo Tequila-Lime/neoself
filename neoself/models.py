@@ -116,7 +116,7 @@ class Result(models.Model):
     success = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Result for {self.questionnaire.user} habit {self.questionnaire.habit_name}"
+        return f"Result for {self.questionnaire.user.first_name} habit {self.questionnaire.habit_name}"
 
 class Notification(models.Model):
     habit = models.ForeignKey(Questionnaire, on_delete=models.CASCADE, null=True, blank=True)
