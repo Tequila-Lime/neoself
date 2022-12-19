@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import User,Questionnaire,Reflection,Record,Result,Notification,Friend,Badge,WeekLog, Reaction 
-from .serializers import UserSerializer,QuestionnaireSerializer,ReflectionSerializer,RecordSerializer,WeekLogSerializer,ResultSerializer,NotificationSerializer,FriendSerializer, ReactionSerializer
+from .serializers import UserSerializer,QuestionnaireSerializer,ReflectionSerializer,RecordSerializer,WeekLogSerializer,ResultSerializer,NotificationSerializer,FriendSerializer, ReactionSerializer, FriendPostSerializer
 from rest_framework import generics, status, parsers, filters
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -133,6 +133,37 @@ class ReflectionDetail(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated] 
 
 class FriendView(generics.ListCreateAPIView):
+    queryset = Friend.objects.all()
+    serializer_class = FriendPostSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        queryset = Friend.objects.filter(Q(current_user=self.request.user.id) | Q(friend=self.request.user))
+        return queryset
+
+    def perform_create(self, serializer):
+        serializer.save(current_user=self.request.user)
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return FriendSerializer
+        return self.serializer_class
+
+    def create(self, request, *args, **kwargs):
+        try:
+            return super().create(request, *args, **kwargs)
+        except IntegrityError:
+            error_data = {
+                "error": "You are already friends with this user."
+            }
+            return Response(error_data, status=status.HTTP_400_BAD_REQUEST)
+
+class FriendAllView(generics.ListAPIView):
+    queryset = Friend.objects.all()
+    serializer_class = FriendSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+class FriendSearchView(generics.ListCreateAPIView):
     '''
     Allows user to view friends list as well as add an a new friend.
     '''
