@@ -13,6 +13,7 @@ urlpatterns = [
     path('reflection/', views.ReflectionView.as_view(), name="reflection"),
     path('reflection/<int:pk>/', views.ReflectionDetail.as_view(), name=('reflection-detail')),
     path('friends/', views.FriendView.as_view(), name="friend"),
+    path('friends/all/', views.FriendAllView.as_view(), name="friend-all"),
     path('friends/<int:pk>/', views.FriendDetail.as_view(), name="friend-detail"),
     path('record/user/', views.RecordView.as_view(), name='user-records'),
     path('record/all/', views.RecordAllView.as_view(), name="all-records"),
