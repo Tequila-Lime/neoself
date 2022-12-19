@@ -694,9 +694,11 @@ GET,POST <BASE_URL>/friends/
 
 for POST only
 ```json
+
 {
 	"friend": "user1",
 }
+
 ```
 
 ### response:
@@ -707,6 +709,7 @@ for POST only
 	"created_at": "2022-12-12T20:30:21.029470Z"
 }
 ```
+
 
 ### View all friend relationships
 
@@ -728,7 +731,9 @@ for POST only
 }
 ```
 
+
 ### View individual friend detail
+
 
 #### request:
 Username and password are required fields.
@@ -746,6 +751,32 @@ GET,DELETE, PUT <BASE_URL>/friends/int:pk/
 	"created_at": "2022-12-12T20:30:21.029470Z"
 }
 ```
+
+
+### Add an avatar to a User:
+
+#### request:
+A selected image/jpeg input is required.
+
+PATCH  <BASE_URL>/auth/users/me/avatar/
+
+```binary file
+{
+  "Selected File": "~Desktop/flounder.jpeg"
+}
+```
+
+#### response:
+200 OK
+
+```
+{
+	"id": 5,
+	"username": "flounder24",
+	"full_name": "",
+	"bio": "",
+	"created_at": "2022-12-14T15:04:18.496336Z",
+	"avatar": "http://127.0.0.1:8000/media/user_avatars/flounder_2TBjzYv.jpeg"
 
 ### To search friends
 
