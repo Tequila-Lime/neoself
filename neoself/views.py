@@ -86,7 +86,7 @@ class RecordAllView(generics.ListAPIView):
     def get_queryset(self):
         first = date(2000,5,17)
         today = date.today()
-        queryset = Record.objects.filter(public=True,filled_in = True,date__range=(first, today)).order_by('-date')
+        queryset = Record.objects.filter(Q(public=True,filled_in = True) & Q(date__range=(first, today)) & ~Q(user=self.request.user)).order_by('-date')
         return queryset
 
 class FriendRecordView(generics.ListAPIView):
