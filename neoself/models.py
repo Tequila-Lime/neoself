@@ -83,6 +83,7 @@ class Record(models.Model):
     filled_in = models.BooleanField(default=False)
     public = models.BooleanField(default=True)
     likes_num = models.IntegerField(default=0)
+    user = models.ForeignKey(User,on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f"record on {self.date} for {self.week_reflection}"
@@ -220,7 +221,8 @@ def all_habit_records(sender, instance, created, *args, **kwargs):
                         comment_dh = False,
                         day_in_habit = count + 1,
                         date = reflection_day + added_day,
-                        public = True
+                        public = True,
+                        user = questionnaire.user
                     )
             else:
                 records = Record.objects.filter(week_reflection__questionnaire__id=questionnaire.id, date=reflection_day + added_day)
