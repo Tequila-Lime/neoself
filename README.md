@@ -29,6 +29,7 @@ https://neoself-be-service.onrender.com
 |friends/int:pk/| to see a specific friend | GET, DELETE, PUT | x |
 |friends/search/| search for your friends | GET, POST | x |
 |auth/users/me/avatar/| add avatar to user | PATCH | |
+|auth/users/|register a new user | POST | x|
 |auth/token/login/| login established user & create auth token | POST | x |
 |auth/token/logout/| logout established user & destroy auth token | POST | x |
 
