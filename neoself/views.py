@@ -57,6 +57,10 @@ class QuestionnaireView(generics.ListCreateAPIView):
         queryset = Questionnaire.objects.filter(user=self.request.user)
         return queryset
 
+    def perform_create(self, serializer):
+        #this is to POST a new Card
+        serializer.save(user=self.request.user)
+
 class QuestionnaireDetail(generics.RetrieveAPIView):
     '''
     Users should only be able to see the individual Questionnaire after they created it.
@@ -246,6 +250,10 @@ class ReactionView(generics.ListCreateAPIView):
     queryset = Reaction.objects.all()
     serializer_class = ReactionSerializer
     permission_classes = []
+
+    def perform_create(self, serializer):
+        #this is to POST a new Card
+        serializer.save(commentor=self.request.user)
 
 class ReactionDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Reaction.objects.all()
