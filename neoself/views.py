@@ -54,7 +54,7 @@ class QuestionnaireView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        queryset = Questionnaire.objects.filter(user=self.request.user)
+        queryset = Questionnaire.objects.filter(user=self.request.user).order_by('-date')
         return queryset
 
     def perform_create(self, serializer):
@@ -116,6 +116,20 @@ class RecordDetail(generics.RetrieveUpdateAPIView):
     serializer_class = RecordSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
+class RecordHabitDetail(generics.ListAPIView):
+    queryset = Record.objects.all()
+    serializer_class = RecordSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        first = date(2000,5,17)
+        today = date.today()
+        questionnaire_id = self.kwargs['questionnaire_id']
+        questionnaire = Questionnaire.objects.get(id=questionnaire_id)
+        reflection = Reflection.objects.filter(questionnaire=questionnaire)
+        queryset = Record.objects.filter(week_reflection__in=reflection, date__range=(first, today)).order_by('-date')
+        return queryset
+
 class ReflectionView(generics.ListCreateAPIView):
     '''
     These are based on questionnaire model and the data should eventually be populated by it initially
@@ -127,6 +141,18 @@ class ReflectionView(generics.ListCreateAPIView):
     def get_queryset(self):
         queryset = Reflection.objects.filter(questionnaire__user=self.request.user)
         return queryset
+
+class ReflectionHabitView(generics.ListAPIView):
+    queryset = Reflection.objects.all()
+    serializer_class = ReflectionSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        questionnaire_id = self.kwargs['id']
+        questionnaire = Questionnaire.objects.get(id=questionnaire_id)
+        queryset = Reflection.objects.filter(questionnaire=questionnaire).order_by('-date')
+        return queryset
+
 
 class ReflectionDetail(generics.RetrieveAPIView):
     '''
