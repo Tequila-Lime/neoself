@@ -12,9 +12,11 @@ https://neoself-be-service.onrender.com
 |questionnaire/| this shows all questionnaires a user has filled out as well as letting them to create more| GET, POST | x |
 |questionnaire/int:pk/| This shows an individual questionnaire filled out | GET | x | 
 |reflection/| see all reflections for a particular user | GET, POST | x |
+|questionnaire/<int:id>/reflection/| get all the reflections for a questionnaire | GET | X |
 |reflection/int:pk/ | see the details for an individual reflection | GET | x |
 |record/user/| be able to see all the users own records | GET | x |
 |record/all/| get all records for everyone | GET | X |
+|habit/<int:questionnaire_id>/records/| gets the records for a particular questionnaire | GET | X |
 |record/friends/| see all friends most recent records that are public | GET | X |
 |record/int:pk/| be able to look at an individual record | GET, PUT| x |
 |reaction/| able to see reaction to every record by every user | GET, POST | x |
@@ -335,6 +337,49 @@ for POST only
 ]
 ```
 
+### To get all the reflections made for a habit
+
+#### request:
+Username and password are required fields.
+
+GET <BASE_URL>/questionnaire/int:id/reflection
+
+id is the id of the questionnaire
+```json
+```
+
+### response:
+```json
+[
+	{
+		"id": 197,
+		"questionnaire": 164,
+		"cue_question_1": "Things happening",
+		"cue_question_2": "adsadasdsad",
+		"cue_question_3": "adsadasdsad",
+		"craving_question_1": "adsadasdsad",
+		"response_question_1": "adsadasdsad",
+		"response_question_2": "adsadasdsad",
+		"date": "2022-12-11",
+		"metric_baseline": 14,
+		"goal_metric": 20
+	},
+	{
+		"id": 196,
+		"questionnaire": 164,
+		"cue_question_1": "adsadasdsad",
+		"cue_question_2": "adsadasdsad",
+		"cue_question_3": "adsadasdsad",
+		"craving_question_1": "saddsasadsda",
+		"response_question_1": "adsadasdsad",
+		"response_question_2": "adsadasdsad",
+		"date": "2022-12-01",
+		"metric_baseline": 0,
+		"goal_metric": 0
+	}
+]
+```
+
 ### To get individual reflection
 
 #### request:
@@ -454,6 +499,48 @@ GET <BASE_URL>/record/all/
 		"likes_num": 0
 	}
 ]
+```
+
+### To get all records for a habit
+
+#### request:
+Username and password are required fields.
+
+GET <BASE_URL>/habit/<int:questionnaire_id>/records/
+
+the id is the Id of the questionnaire that was initially filled out by user
+```json
+
+```
+
+### response:
+```json
+{
+	"id": 1818,
+	"week_reflection": 191,
+	"daily_record": 30,
+	"cue_dh": false,
+	"craving_dh": true,
+	"response_dh": false,
+	"comment_dh": "False",
+	"date": "2022-12-18",
+	"public": true,
+	"filled_in": false,
+	"likes_num": 0
+},
+{
+	"id": 1819,
+	"week_reflection": 191,
+	"daily_record": 30,
+	"cue_dh": false,
+	"craving_dh": true,
+	"response_dh": false,
+	"comment_dh": "False",
+	"date": "2022-12-18",
+	"public": true,
+	"filled_in": false,
+	"likes_num": 0
+}
 ```
 ### To get detail of individual record
 
