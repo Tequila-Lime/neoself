@@ -5,6 +5,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('user/', views.UserView.as_view(), name='user-profile'),
+    path('user/all/', views.AllUserView.as_view(), name='all-users'),
     path('user/self/', views.UserDetail.as_view(), name='user-detail'),
     path('user/search/', views.UserSearchList.as_view(), name="user-search"),
     path('auth/users/me/avatar/', views.UserAvatarView.as_view(), name='user_avatar'),
