@@ -128,7 +128,7 @@ class Notification(models.Model):
         return f"notification for {self.habit}"
 
 class Friend(models.Model):
-    current_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='current_user')
+    current_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='current_user')
     friend = models.ForeignKey(User, on_delete=models.CASCADE, related_name='friendships')
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     best_friend = models.BooleanField(default='False')
