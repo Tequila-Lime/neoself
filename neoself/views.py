@@ -16,7 +16,7 @@ import time
 from datetime import date
 # Create your views here.
 
-class UserListView(generics.ListAPIView):
+class AllUserView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
