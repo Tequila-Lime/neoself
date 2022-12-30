@@ -169,7 +169,7 @@ class ReflectionDetail(generics.RetrieveAPIView):
 
 class FriendView(generics.ListCreateAPIView):
     queryset = Friend.objects.all()
-    serializer_class = FriendPostSerializer
+    serializer_class = FriendSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
@@ -180,18 +180,9 @@ class FriendView(generics.ListCreateAPIView):
         serializer.save(current_user=self.request.user)
 
     def get_serializer_class(self):
-        if self.request.method == 'GET':
-            return FriendSerializer
+        if self.request.method == 'POST':
+            return FriendPostSerializer
         return self.serializer_class
-
-    def create(self, request, *args, **kwargs):
-        try:
-            return super().create(request, *args, **kwargs)
-        except IntegrityError:
-            error_data = {
-                "error": "You are already friends with this user."
-            }
-            return Response(error_data, status=status.HTTP_400_BAD_REQUEST)
 
 class FriendAllView(generics.ListAPIView):
     queryset = Friend.objects.all()
