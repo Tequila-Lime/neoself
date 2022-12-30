@@ -19,7 +19,8 @@ from datetime import date
 class AllUserView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
+    permission_classes = [IsAuthenticated]
+    
 class UserView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
