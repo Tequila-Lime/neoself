@@ -74,6 +74,8 @@ class Reflection(models.Model):
 class Record(models.Model):
     week_reflection = models.ForeignKey(Reflection, on_delete=models.CASCADE, null=True, blank=True)
     daily_record = models.IntegerField(default=0)
+    habit_name= models.CharField(max_length=200,blank=True,null=True)
+    metric_label = models.CharField(max_length=200,blank=True,null=True)
     cue_dh = models.BooleanField(default=False)
     craving_dh = models.BooleanField(default=False)
     response_dh = models.BooleanField(default=False)
@@ -222,7 +224,9 @@ def all_habit_records(sender, instance, created, *args, **kwargs):
                         day_in_habit = count + 1,
                         date = reflection_day + added_day,
                         public = True,
-                        user = questionnaire.user
+                        user = questionnaire.user,
+                        metric_label = questionnaire.metric_label,
+                        habit_name = questionnaire.habit_name
                     )
             else:
                 records = Record.objects.filter(week_reflection__questionnaire__id=questionnaire.id, date=reflection_day + added_day)
