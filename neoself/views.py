@@ -179,7 +179,7 @@ class ReflectionView(generics.ListCreateAPIView):
         queryset = Reflection.objects.filter(questionnaire__user=self.request.user)
         return queryset
 
-class ReflectionHabitView(generics.ListAPIView):
+class ReflectionHabitView(generics.ListCreateAPIView):
     queryset = Reflection.objects.all()
     serializer_class = ReflectionSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -190,6 +190,8 @@ class ReflectionHabitView(generics.ListAPIView):
         queryset = Reflection.objects.filter(questionnaire=questionnaire).order_by('-date')
         return queryset
 
+    def perform_create(self, serializer):
+        serializer.save(questionnaire=self.kwargs['id'])
 
 class ReflectionDetail(generics.RetrieveAPIView):
     '''
