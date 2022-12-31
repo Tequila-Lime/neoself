@@ -18,8 +18,12 @@ https://neoself-be-service.onrender.com
 |record/all/| get all records for everyone | GET | X |
 |habit/<int:questionnaire_id>/records/| gets the records for a particular questionnaire | GET | X |
 |record/friends/| see all friends most recent records that are public | GET | X |
+|record/today/user/| users records for today | GET ||
+|record/user/<int:user_id>/| get records for users that are public | GET | X |
+|record/weeklog/<int:wk_id>/| get records in weeklog | GET |  |
 |record/int:pk/| be able to look at an individual record | GET, PUT| x |
-|reaction/| able to see reaction to every record by every user | GET, POST | x |
+|reaction/| able to see reaction to every record by every user (not really useful now) | GET, POST | x |
+|reaction/record/int:record_id/| see reactions for a record | GET, POST |  |
 |reaction/int:pk/| able to see individual reaction to a record from particular user | GET, PUT, DELETE| x |
 |weeklogs/| able to see all the records for a particular habit for a particular user | GET | x |
 |weeklogs/int:pk/| able to see a specific weeklog detail | GET | x |
@@ -466,6 +470,36 @@ GET <BASE_URL>/record/all/
 		"date": "2022-12-18",
 		"public": true,
 		"filled_in": false,
+		"likes_num": 0
+	}
+]
+```
+### To get all records for a user that is public and filled in
+
+#### request:
+Username and password are required fields.
+
+GET <BASE_URL>/record/user/int:pk
+
+```json
+
+```
+
+### response:
+```json
+[
+	{
+		"id": 1817,
+		"user": null,
+		"week_reflection": 191,
+		"daily_record": 0,
+		"cue_dh": false,
+		"craving_dh": false,
+		"response_dh": false,
+		"comment_dh": "False",
+		"date": "2022-12-11",
+		"public": true,
+		"filled_in": true,
 		"likes_num": 0
 	}
 ]
