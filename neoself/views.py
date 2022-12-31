@@ -116,10 +116,42 @@ class FriendRecordView(generics.ListAPIView):
         queryset = Record.objects.filter(week_reflection__questionnaire__user__in=people, date__range=(first, today), public=True, filled_in=True).order_by('-date')
         return queryset
 
+class UserRecordView(generics.ListAPIView):
+    queryset = Record.objects.all()
+    serializer_class = RecordSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        first = date(2000,5,17)
+        today = date.today()
+        user_id = self.kwargs['user_id']
+        queryset = Record.objects.filter(week_reflection__questionnaire__user=user_id, date__range=(first, today), public=True, filled_in = True).order_by('-date') 
+        return queryset
+
 class RecordDetail(generics.RetrieveUpdateAPIView):
     queryset = Record.objects.all()
     serializer_class = RecordSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+class UserTodayRecordView(generics.ListAPIView):
+    queryset = Record.objects.all()
+    serializer_class = RecordSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        queryset = Record.objects.filter(week_reflection__questionnaire__user=self.request.user, date=date.today())
+        return queryset
+
+class WeeklogRecordsView(generics.ListAPIView):
+    queryset = Record.objects.all()
+    serializer_class = RecordSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        wk_id = self.kwargs["wk_id"]
+        weeklog = WeekLog.objects.get(id=wk_id)
+        queryset = Record.objects.filter(id__in=weeklog.records.all()) 
+        return queryset
 
 class RecordHabitDetail(generics.ListAPIView):
     queryset = Record.objects.all()
@@ -272,6 +304,20 @@ class ReactionView(generics.ListCreateAPIView):
     queryset = Reaction.objects.all()
     serializer_class = ReactionSerializer
     permission_classes = []
+
+    def perform_create(self, serializer):
+        #this is to POST a new Card
+        serializer.save(commentor=self.request.user)
+
+class RecordReactionView(generics.ListCreateAPIView):
+    queryset = Reaction.objects.all()
+    serializer_class = ReactionSerializer
+    permission_classes = []
+
+    def get_queryset(self):
+        record_id = self.kwargs["record_id"]
+        queryset = Reaction.objects.filter(record=record_id)
+        return queryset
 
     def perform_create(self, serializer):
         #this is to POST a new Card

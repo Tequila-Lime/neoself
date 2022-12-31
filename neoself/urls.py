@@ -22,12 +22,16 @@ urlpatterns = [
     path('record/all/', views.RecordAllView.as_view(), name="all-records"),
     path('record/<int:pk>/', views.RecordDetail.as_view(), name='record-detail'),
     path('record/friends/', views.FriendRecordView.as_view(), name='friends-record'),
+    path('record/today/user/', views.UserTodayRecordView.as_view(), name="today-user-records"),
+    path('record/weeklog/<int:wk_id>/',views.WeeklogRecordsView.as_view(), name='weeklog-records'),
+    path('record/user/<int:user_id>/',views.UserRecordView.as_view(), name="user-records"),
     path('weeklogs/', views.WeekLogView.as_view(), name="week-logs"),
     path('weeklogs/<int:pk>/', views.WeekLogDetail.as_view(), name="weeklog-details"),
     path('results/', views.ResultsView.as_view(), name='results'),
     path('results/all/', views.ResultsAllView.as_view(), name="results-all"),
     path('results/<int:pk>/',views.ResultsDetail.as_view(), name="results-detail"),
     path('reaction/',views.ReactionView.as_view(), name='record-reactions'),
+    path('reaction/record/<int:record_id>/', views.RecordReactionView.as_view(), name="record-reaction"),
     path('reaction/<int:pk>/', views.ReactionDetail.as_view(), name='reaction-detail'),
 ]
 
