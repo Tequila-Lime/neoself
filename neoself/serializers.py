@@ -66,6 +66,8 @@ class FriendPostSerializer(serializers.ModelSerializer):
 #         fields = ('friend','username','full_name')
 
 class WeekLogSerializer(serializers.ModelSerializer):
+    questionnaire = serializers.SlugRelatedField(slug_field='habit_name', read_only=True)
+
     class Meta:
         model = WeekLog
         fields = '__all__'
