@@ -35,6 +35,7 @@ class RecordSerializer(serializers.ModelSerializer):
         fields = ('id','user','week_reflection','daily_record','cue_dh','craving_dh','response_dh','comment_dh','date','public','filled_in','likes_num','habit_name', 'metric_label')
 
 class ResultSerializer(serializers.ModelSerializer):
+    questionnaire = serializers.SlugRelatedField(slug_field='habit_name', read_only=True)
 
     class Meta:
         model = Result
