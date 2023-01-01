@@ -26,9 +26,11 @@ https://neoself-be-service.onrender.com
 |reaction/record/int:record_id/| see reactions for a record | GET, POST |  |
 |reaction/int:pk/| able to see individual reaction to a record from particular user | GET, PUT, DELETE| x |
 |weeklogs/| able to see all the records for a particular habit for a particular user | GET | x |
-|weeklogs/int:pk/| able to see a specific weeklog detail | GET | x |
+|weeklogs/int:id/| able to see a specific weeklog detail | GET | x |
+|weeklogs/habit/int:id/| see the week logs for a particular questionnaire | GET |  |
 |results/| see all results for a user | GET | x |
 |results/all/| see all records | GET | x |
+|results/habit/int:id/| able to see the results for a particular habit | GET |  |
 |results/int:pk/| see details on one result for user | GET | x |
 |friends/| able to see friends profiles | GET, POST| x |
 |friends/all/| able to view all friend relationships | GET | x |
