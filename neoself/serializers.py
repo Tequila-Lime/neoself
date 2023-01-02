@@ -41,6 +41,11 @@ class ResultSerializer(serializers.ModelSerializer):
         model = Result
         fields = ('id','questionnaire','habit_log','success')
 
+class ResultDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Result
+        fields = ('id','questionnaire','habit_log','success')
+
 class NotificationSerializer(serializers.ModelSerializer):
 
     class Meta:

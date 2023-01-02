@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import User,Questionnaire,Reflection,Record,Result,Notification,Friend,Badge,WeekLog, Reaction 
-from .serializers import UserSerializer,QuestionnaireSerializer,ReflectionSerializer,RecordSerializer,WeekLogSerializer,ResultSerializer,NotificationSerializer,FriendSerializer, ReactionSerializer, FriendPostSerializer
+from .serializers import UserSerializer,QuestionnaireSerializer,ReflectionSerializer,RecordSerializer,WeekLogSerializer,ResultSerializer,NotificationSerializer,FriendSerializer, ReactionSerializer, FriendPostSerializer, ResultDetailSerializer
 from rest_framework import generics, status, parsers, filters
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -305,7 +305,7 @@ class ResultsAllView(generics.ListAPIView):
 
 class ResultsDetail(generics.RetrieveAPIView):
     queryset = Result.objects.all()
-    serializer_class = ResultSerializer
+    serializer_class = ResultDetailSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 class UserAvatarView(generics.UpdateAPIView):
