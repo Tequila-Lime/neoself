@@ -60,6 +60,7 @@ class Reflection(models.Model):
     response_question_2 = models.TextField(max_length=1000)
     metric_baseline = models.IntegerField(default=0)
     goal_metric = models.IntegerField(default=0)
+    metric_label = models.CharField(max_length=50, null=True, blank=True)
     date = models.DateField(default=date.today)
     notif_time = models.TimeField(null=True, blank=True) 
 
@@ -159,6 +160,7 @@ def save_reflection(sender,instance,created, *args, **kwargs):
             response_question_2 = instance.response_question_2,
             metric_baseline = instance.metric_baseline,
             goal_metric = instance.goal_metric,
+            metric_label=instance.metric_label,
             date = instance.date
         )
         loops = round(instance.duration / 7)
