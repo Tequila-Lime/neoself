@@ -33,7 +33,7 @@ class UserView(generics.ListAPIView):
 class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = []
 
 class UserSelfDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
@@ -209,7 +209,7 @@ class ReflectionDetail(generics.RetrieveAPIView):
 class FriendView(generics.ListCreateAPIView):
     queryset = Friend.objects.all()
     serializer_class = FriendSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = []
 
     def get_queryset(self):
         queryset = Friend.objects.filter(Q(current_user=self.request.user.id) | Q(friend=self.request.user))
