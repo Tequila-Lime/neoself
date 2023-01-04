@@ -8,6 +8,7 @@ https://neoself-be-service.onrender.com
 |---|-----------|-------|---|
 |user/| User can view there own profile info | GET | x |
 |user/self/| User is able to edit their profile info and delete profile if they so choose | GET, PUT, DELETE | x |
+|user/int:pk| See profile info for individual user | GET | |
 |user/search/| Search users by username/first name/last name | GET | x |
 |questionnaire/| this shows all questionnaires a user has filled out as well as letting them to create more| GET, POST | x |
 |questionnaire/int:pk/| This shows an individual questionnaire filled out | GET | x | 
