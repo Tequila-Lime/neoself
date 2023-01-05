@@ -108,6 +108,13 @@ class Reaction(models.Model):
     def __str__(self):
         return f"{self.commentor.full_name} liked {self.record.week_reflection.questionnaire.habit_name} record"
 
+class Like(models.Model):
+    record=models.ForeignKey(Record, on_delete=models.CASCADE)
+    person_liked = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.person_liked.full_name} liked {self.record.week_reflection.questionnaire.habit_name} record"
+
 # A model that gets all the data for the week so we can give a summary
 class WeekLog(models.Model):
     questionnaire = models.ForeignKey(Questionnaire, on_delete=models.CASCADE, null=True, blank=True)

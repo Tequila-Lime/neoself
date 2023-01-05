@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User,Questionnaire,Reflection,Record,Result,Notification,Friend,Badge,WeekLog,Reaction
+from .models import User,Questionnaire,Reflection,Record,Result,Notification,Friend,Badge,WeekLog,Reaction, Like
 from django.contrib.auth.admin import UserAdmin
 
 class CustomUserAdmin(UserAdmin):
@@ -17,3 +17,4 @@ admin.site.register(Friend)
 admin.site.register(Badge)
 admin.site.register(WeekLog)
 admin.site.register(Reaction)
+admin.site.register(Like)

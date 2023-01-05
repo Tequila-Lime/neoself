@@ -26,6 +26,7 @@ https://neoself-be-service.onrender.com
 |reaction/| able to see reaction to every record by every user (not really useful now) | GET, POST | x |
 |reaction/record/int:record_id/| see reactions for a record | GET, POST |  |
 |reaction/int:pk/| able to see individual reaction to a record from particular user | GET, PUT, DELETE| x |
+|like/record/<int:record_id>/| Gets likes for a particular record | GET, POST ||
 |weeklogs/| able to see all the records for a particular habit for a particular user | GET | x |
 |weeklogs/int:id/| able to see a specific weeklog detail | GET | x |
 |weeklogs/habit/int:id/| see the week logs for a particular questionnaire | GET |  |

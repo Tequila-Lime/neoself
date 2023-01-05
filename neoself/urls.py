@@ -36,6 +36,7 @@ urlpatterns = [
     path('reaction/',views.ReactionView.as_view(), name='record-reactions'),
     path('reaction/record/<int:record_id>/', views.RecordReactionView.as_view(), name="record-reaction"),
     path('reaction/<int:pk>/', views.ReactionDetail.as_view(), name='reaction-detail'),
+    path('like/record/<int:record_id>/', views.RecordLikeView.as_view(), name="record-like"),
 ]
 
 if settings.DEBUG: 

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User,Questionnaire,Reflection,Record,Result,Notification,Friend,Badge,WeekLog, Reaction
+from .models import User,Like,Questionnaire,Reflection,Record,Result,Notification,Friend,Badge,WeekLog, Reaction
 
 class UserSerializer(serializers.ModelSerializer):
     
@@ -82,3 +82,8 @@ class ReactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reaction
         fields = ('id','record','commentor','gif_url')
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = ('id','record','person_liked')
