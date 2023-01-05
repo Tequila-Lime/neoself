@@ -47,6 +47,9 @@ class Questionnaire(models.Model):
     signature = models.CharField(max_length=100)
     start_today = models.BooleanField(default=False)
 
+    public=models.BooleanField(default=True)
+    status = models.BooleanField(default=True)
+
     def __str__(self):
         return f"{self.user} habit is {self.habit_name}"
 
@@ -85,6 +88,7 @@ class Record(models.Model):
     date = models.DateField(default=date.today)
     filled_in = models.BooleanField(default=False)
     public = models.BooleanField(default=True)
+    comments_num = models.IntegerField(default=0)
     likes_num = models.IntegerField(default=0)
     user = models.ForeignKey(User,on_delete=models.CASCADE, null=True, blank=True)
 
@@ -187,6 +191,14 @@ def save_reflection(sender,instance,created, *args, **kwargs):
                 message = f"Make sure to {instance.habit_name} today"
             )
         instance.save()
+    elif not created:
+        if instance.status == False:
+            today = date.today()
+            records = Record.objects.filter(week_reflection__questionnaire__id=instance.id,date__gt=today )
+            records.delete()
+        else:
+            today = date.today()
+            records = Record.objects.filter(week_reflection__questionnaire__id=instance.id,date__gt=today).update(public=instance.public)
 
 #need day_in_habit to be determined by the date and auto generated
 @receiver(post_save, sender=Reflection)
@@ -225,10 +237,10 @@ def all_habit_records(sender, instance, created, *args, **kwargs):
                         comment_dh = False,
                         day_in_habit = count + 1,
                         date = reflection_day + added_day,
-                        public = True,
+                        public = questionnaire.public,
                         user = questionnaire.user,
                         metric_label = questionnaire.metric_label,
-                        habit_name = questionnaire.habit_name
+                        habit_name = questionnaire.habit_name,
                     )
             else:
                 records = Record.objects.filter(week_reflection__questionnaire__id=questionnaire.id, date=reflection_day + added_day)
@@ -281,13 +293,13 @@ def add_like_count(sender,instance,created,*args,**kwargs):
     if created:
         likes = Record.objects.get(id=instance.record.id)
         Record.objects.filter(id=instance.record.id).update(
-            likes_num = likes.likes_num + 1
+            comments_num = likes.comments_num + 1
         )
 
 @receiver(pre_delete, sender=Reaction)
 def subtract_like_count(sender, instance, using, *args, **kwargs):
     likes = Record.objects.get(id=instance.record.id)
     Record.objects.filter(id=instance.record.id).update(
-        likes_num = likes.likes_num - 1
+        comments_num = likes.comments_num - 1
     )
 

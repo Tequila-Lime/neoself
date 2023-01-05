@@ -19,7 +19,7 @@ class QuestionnaireSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Questionnaire
-        fields = ('id','user','start_habit','habit_name','date','start_today','duration','sunday','monday','tuesday','wednesday','thursday','friday','saturday','metric_label','metric_baseline','goal_label','goal_metric','opt_in','cue_question_1','cue_question_2','cue_question_3','craving_question_1','response_question_1',    'response_question_2','signature' )
+        fields = ('id','public','status','user','start_habit','habit_name','date','start_today','duration','sunday','monday','tuesday','wednesday','thursday','friday','saturday','metric_label','metric_baseline','goal_label','goal_metric','opt_in','cue_question_1','cue_question_2','cue_question_3','craving_question_1','response_question_1',    'response_question_2','signature' )
 
 class ReflectionSerializer(serializers.ModelSerializer):
 
@@ -32,7 +32,7 @@ class RecordSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Record
-        fields = ('id','user','week_reflection','daily_record','metric_label','cue_dh','craving_dh','response_dh','comment_dh','date','public','filled_in','likes_num','habit_name', 'metric_label')
+        fields = ('id','user','week_reflection','daily_record','metric_label','cue_dh','craving_dh','response_dh','comment_dh','date','public','filled_in','likes_num','comments_num','habit_name', 'metric_label')
 
 class ResultSerializer(serializers.ModelSerializer):
     questionnaire = serializers.SlugRelatedField(slug_field='habit_name', read_only=True)

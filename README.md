@@ -11,7 +11,7 @@ https://neoself-be-service.onrender.com
 |user/int:pk| See profile info for individual user | GET | |
 |user/search/| Search users by username/first name/last name | GET | x |
 |questionnaire/| this shows all questionnaires a user has filled out as well as letting them to create more| GET, POST | x |
-|questionnaire/int:pk/| This shows an individual questionnaire filled out | GET | x | 
+|questionnaire/int:pk/| This shows an individual questionnaire filled out | GET, PATCH | x | 
 |reflection/| see all reflections for a particular user | GET, POST | x |
 |questionnaire/<int:id>/reflection/| get all the reflections for a questionnaire | GET, POST | X |
 |reflection/int:pk/ | see the details for an individual reflection | GET | x |

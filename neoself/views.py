@@ -71,7 +71,7 @@ class QuestionnaireView(generics.ListCreateAPIView):
         #this is to POST a new Card
         serializer.save(user=self.request.user)
 
-class QuestionnaireDetail(generics.RetrieveAPIView):
+class QuestionnaireDetail(generics.RetrieveUpdateAPIView):
     '''
     Users should only be able to see the individual Questionnaire after they created it.
     Editing to this plan will be done in the weekly reflections 
