@@ -51,8 +51,8 @@ class UserSearchList(generics.ListAPIView):
     
     def get_queryset(self):
         query = self.request.GET.get("q")
-        return User.objects.annotate(search=SearchVector("username","first_name","last_name")).filter(
-            search=query
+        return User.objects.annotate(search=SearchVector("username","full_name")).filter(
+            search__icontains=query
         )
 
 class QuestionnaireView(generics.ListCreateAPIView):
