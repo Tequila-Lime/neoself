@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import User,Questionnaire,Reflection,Record,Result,Notification,Friend,Badge,WeekLog, Reaction 
-from .serializers import UserSerializer,QuestionnaireSerializer,ReflectionSerializer,RecordSerializer,WeekLogSerializer,ResultSerializer,NotificationSerializer,FriendSerializer, ReactionSerializer, FriendPostSerializer, ResultDetailSerializer
+from .models import User,Questionnaire,Reflection,Record,Result,Notification,Friend,Badge,WeekLog, Reaction, Like 
+from .serializers import UserSerializer,QuestionnaireSerializer,ReflectionSerializer,RecordSerializer,WeekLogSerializer,ResultSerializer,NotificationSerializer,FriendSerializer, ReactionSerializer, FriendPostSerializer, ResultDetailSerializer, LikeSerializer
 from rest_framework import generics, status, parsers, filters
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -354,3 +354,17 @@ class ReactionDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Reaction.objects.all()
     serializer_class = ReactionSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+class RecordLikeView(generics.ListCreateAPIView):
+    queryset = Like.objects.all()
+    serializer_class = LikeSerializer
+    permission_classes = []
+
+    def get_queryset(self):
+        record_id = self.kwargs["record_id"]
+        queryset = Like.objects.filter(record=record_id)
+        return queryset
+
+    def perform_create(self, serializer):
+        #this is to POST a new Card
+        serializer.save(person_liked=self.request.user)
