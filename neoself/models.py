@@ -112,8 +112,14 @@ class Like(models.Model):
     record=models.ForeignKey(Record, on_delete=models.CASCADE)
     person_liked = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['record', 'person_liked'], name='unique_like')
+        ]
+
     def __str__(self):
         return f"{self.person_liked.full_name} liked {self.record.week_reflection.questionnaire.habit_name} record"
+
 
 # A model that gets all the data for the week so we can give a summary
 class WeekLog(models.Model):
