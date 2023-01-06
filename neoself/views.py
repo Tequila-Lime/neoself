@@ -362,7 +362,7 @@ class RecordLikeView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         record_id = self.kwargs["record_id"]
-        queryset = Like.objects.filter(record=record_id)
+        queryset = Like.objects.filter(record=record_id, person_liked=self.request.user)
         return queryset
 
     def perform_create(self, serializer):
