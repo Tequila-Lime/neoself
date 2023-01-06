@@ -10,7 +10,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
 from django.contrib.postgres.search import SearchVector,SearchQuery,SearchRank
 from django.db import IntegrityError
-import datetime
+from rest_framework.parsers import MultiPartParser, FormParser
 from datetime import datetime, timedelta
 import time
 from datetime import date
@@ -316,7 +316,7 @@ class ResultsDetail(generics.RetrieveAPIView):
 class UserAvatarView(generics.UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    parser_classes = [parsers.FileUploadParser]
+    parser_classes = (MultiPartParser, FormParser)
 
     def get_object(self):
         #return User.objects.first()
