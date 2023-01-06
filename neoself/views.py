@@ -38,6 +38,7 @@ class UserDetail(generics.RetrieveAPIView):
 class UserSelfDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    parser_classes = [parsers.FileUploadParser]
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_object(self):
