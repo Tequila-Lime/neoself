@@ -368,3 +368,8 @@ class RecordLikeView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         #this is to POST a new Card
         serializer.save(person_liked=self.request.user)
+
+class RecordLikeDetail(generics.RetrieveDestroyAPIView):
+    queryset = Like.objects.all()
+    serializer_class = LikeSerializer
+    permission_classes = []
