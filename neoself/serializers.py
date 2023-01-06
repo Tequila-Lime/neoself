@@ -12,6 +12,9 @@ class UserSerializer(serializers.ModelSerializer):
             file = self.initial_data.get("file")
             instance.avatar.save(file.name, file, save=True)
             return instance
+        if 'avatar' in validated_data:
+            avatar = validated_data.get('avatar')
+            instance.avatar.save(avatar.name, avatar, save=True)
         # this call to super is to make sure that update still works for other fields
         return super().update(instance, validated_data)
         
