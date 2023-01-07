@@ -117,7 +117,7 @@ class RecordAllView(generics.ListAPIView):
 
 class FriendRecordView(generics.ListAPIView):
     queryset = Record.objects.all()
-    serializer_class = RecordSerializer
+    serializer_class = RecordDataSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
@@ -135,7 +135,7 @@ class FriendRecordView(generics.ListAPIView):
 
 class UserRecordView(generics.ListAPIView):
     queryset = Record.objects.all()
-    serializer_class = RecordSerializer
+    serializer_class = RecordDataSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
@@ -161,7 +161,7 @@ class UserTodayRecordView(generics.ListAPIView):
 
 class WeeklogRecordsView(generics.ListAPIView):
     queryset = Record.objects.all()
-    serializer_class = RecordSerializer
+    serializer_class = RecordDataSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
@@ -172,7 +172,7 @@ class WeeklogRecordsView(generics.ListAPIView):
 
 class RecordHabitDetail(generics.ListAPIView):
     queryset = Record.objects.all()
-    serializer_class = RecordSerializer
+    serializer_class = RecordDataSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
