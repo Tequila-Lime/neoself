@@ -213,6 +213,7 @@ def save_reflection(sender,instance,created, *args, **kwargs):
         else:
             today = date.today()
             records = Record.objects.filter(week_reflection__questionnaire__id=instance.id,date__gt=today).update(public=instance.public, length=instance.duration)
+            records = Record.objects.filter(week_reflection__questionnaire__id=instance.id).update(length=instance.duration)
 
 #need day_in_habit to be determined by the date and auto generated
 @receiver(post_save, sender=Reflection)
