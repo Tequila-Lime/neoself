@@ -91,6 +91,7 @@ class Record(models.Model):
     comments_num = models.IntegerField(default=0)
     likes_num = models.IntegerField(default=0)
     user = models.ForeignKey(User,on_delete=models.CASCADE, null=True, blank=True)
+    length = models.IntegerField(default=0)
 
     def __str__(self):
         return f"record on {self.date} for {self.week_reflection}"
@@ -211,7 +212,7 @@ def save_reflection(sender,instance,created, *args, **kwargs):
             records.delete()
         else:
             today = date.today()
-            records = Record.objects.filter(week_reflection__questionnaire__id=instance.id,date__gt=today).update(public=instance.public)
+            records = Record.objects.filter(week_reflection__questionnaire__id=instance.id,date__gt=today).update(public=instance.public, length=instance.duration)
 
 #need day_in_habit to be determined by the date and auto generated
 @receiver(post_save, sender=Reflection)
@@ -254,6 +255,7 @@ def all_habit_records(sender, instance, created, *args, **kwargs):
                         user = questionnaire.user,
                         metric_label = questionnaire.metric_label,
                         habit_name = questionnaire.habit_name,
+                        length = questionnaire.duration
                     )
             else:
                 records = Record.objects.filter(week_reflection__questionnaire__id=questionnaire.id, date=reflection_day + added_day)

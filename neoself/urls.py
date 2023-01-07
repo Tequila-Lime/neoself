@@ -19,6 +19,7 @@ urlpatterns = [
     path('friends/all/', views.FriendAllView.as_view(), name="friend-all"),
     path('friends/<int:pk>/', views.FriendDetail.as_view(), name="friend-detail"),
     path('habit/<int:questionnaire_id>/records/', views.RecordHabitDetail.as_view(), name="Habit-records"),
+    path('habit/<int:questionnaire_id>/records/data/', views.DataRecordHabitDetail.as_view(), name="Habit-data-records"),
     path('record/user/', views.RecordView.as_view(), name='user-records'),
     path('record/all/', views.RecordAllView.as_view(), name="all-records"),
     path('record/<int:pk>/', views.RecordDetail.as_view(), name='record-detail'),

@@ -18,6 +18,7 @@ https://neoself-be-service.onrender.com
 |record/user/| be able to see all the users own records | GET | x |
 |record/all/| get all records for everyone | GET | X |
 |habit/<int:questionnaire_id>/records/| gets the records for a particular questionnaire | GET | X |
+|habit/<int:questionnaire_id>/records/data/| gets the records for a particular questionnaire for data visualizing | GET | X |
 |record/friends/| see all friends most recent records that are public | GET | X |
 |record/today/user/| users records for today | GET ||
 |record/user/<int:user_id>/| get records for users that are public | GET | X |
