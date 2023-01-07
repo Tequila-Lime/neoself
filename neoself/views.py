@@ -91,6 +91,17 @@ class RecordView(generics.ListAPIView):
         today = date.today()
         queryset = Record.objects.filter(week_reflection__questionnaire__user=self.request.user, date__range=(first, today)).order_by('-date')
         return queryset
+
+class RecordDataView(generics.ListAPIView):
+    queryset = Record.objects.all()
+    serializer_class = RecordDataSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        first = date(2000,5,17)
+        today = date.today()
+        queryset = Record.objects.filter(week_reflection__questionnaire__user=self.request.user, date__range=(first, today)).order_by('-date')
+        return queryset
 # Try to make a record view that seperates habit
 
 class RecordAllView(generics.ListAPIView):
