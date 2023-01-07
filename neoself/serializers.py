@@ -43,7 +43,7 @@ class RecordDataSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Record
-        fields = ('id','length','user','week_reflection','daily_record','metric_label','cue_dh','craving_dh','response_dh','comment_dh','date','public','filled_in','likes_num','comments_num','habit_name', 'metric_label')
+        fields = ('id','day_in_habit','length','user','week_reflection','daily_record','metric_label','cue_dh','craving_dh','response_dh','comment_dh','date','public','filled_in','likes_num','comments_num','habit_name', 'metric_label')
 
 class ResultSerializer(serializers.ModelSerializer):
     questionnaire = serializers.SlugRelatedField(slug_field='habit_name', read_only=True)
