@@ -21,6 +21,7 @@ urlpatterns = [
     path('habit/<int:questionnaire_id>/records/', views.RecordHabitDetail.as_view(), name="Habit-records"),
     path('habit/<int:questionnaire_id>/records/data/', views.DataRecordHabitDetail.as_view(), name="Habit-data-records"),
     path('record/user/', views.RecordView.as_view(), name='user-records'),
+    path('record/user/data/', views.RecordDataView.as_view(), name='user-records'),
     path('record/all/', views.RecordAllView.as_view(), name="all-records"),
     path('record/<int:pk>/', views.RecordDetail.as_view(), name='record-detail'),
     path('record/friends/', views.FriendRecordView.as_view(), name='friends-record'),
