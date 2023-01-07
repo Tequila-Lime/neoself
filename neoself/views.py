@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import User,Questionnaire,Reflection,Record,Result,Notification,Friend,Badge,WeekLog, Reaction, Like 
-from .serializers import UserSerializer,QuestionnaireSerializer,ReflectionSerializer,RecordSerializer,WeekLogSerializer,ResultSerializer,NotificationSerializer,FriendSerializer, ReactionSerializer, FriendPostSerializer, ResultDetailSerializer, LikeSerializer
+from .serializers import UserSerializer,RecordDataSerializer,QuestionnaireSerializer,ReflectionSerializer,RecordSerializer,WeekLogSerializer,ResultSerializer,NotificationSerializer,FriendSerializer, ReactionSerializer, FriendPostSerializer, ResultDetailSerializer, LikeSerializer
 from rest_framework import generics, status, parsers, filters
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -162,6 +162,20 @@ class WeeklogRecordsView(generics.ListAPIView):
 class RecordHabitDetail(generics.ListAPIView):
     queryset = Record.objects.all()
     serializer_class = RecordSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        first = date(2000,5,17)
+        today = date.today()
+        questionnaire_id = self.kwargs['questionnaire_id']
+        questionnaire = Questionnaire.objects.get(id=questionnaire_id)
+        reflection = Reflection.objects.filter(questionnaire=questionnaire)
+        queryset = Record.objects.filter(week_reflection__in=reflection, date__range=(first, today)).order_by('-date')
+        return queryset
+
+class DataRecordHabitDetail(generics.ListAPIView):
+    queryset = Record.objects.all()
+    serializer_class = RecordDataSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
