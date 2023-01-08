@@ -38,6 +38,7 @@ https://neoself-be-service.onrender.com
 |results/int:pk/| see details on one result for user | GET | x |
 |friends/| able to see friends profiles | GET, POST| x |
 |friends/all/| able to view all friend relationships | GET | x |
+|friends/specific/<int:friend_id>/| see a specific firend | GET | |
 |friends/int:pk/| to see a specific friend | GET, DELETE, PUT | x |
 |friends/search/| search for your friends | GET, POST | x |
 |auth/users/me/avatar/| add avatar to user | PATCH | |

@@ -249,6 +249,16 @@ class FriendView(generics.ListCreateAPIView):
             return FriendPostSerializer
         return self.serializer_class
 
+class FriendSpecificView(generics.ListAPIView):
+    queryset = Friend.objects.all()
+    serializer_class = FriendSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        specific_friend = self.kwargs['friend_id']
+        queryset = Friend.objects.filter(Q(current_user=self.request.user.id, friend = specific_friend) | Q(friend=self.request.user, current_user=specific_friend))
+        return queryset
+
 class FriendAllView(generics.ListAPIView):
     queryset = Friend.objects.all()
     serializer_class = FriendSerializer
