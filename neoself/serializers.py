@@ -90,6 +90,8 @@ class WeekLogSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ReactionSerializer(serializers.ModelSerializer):
+    commentor = serializers.SlugRelatedField(slug_field='username', read_only=True)
+
     class Meta:
         model = Reaction
         fields = ('id','record','commentor','gif_url')
