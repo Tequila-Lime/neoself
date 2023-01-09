@@ -66,11 +66,14 @@ class NotificationSerializer(serializers.ModelSerializer):
         fields = ('id','habit','time','message')
 
 class FriendSerializer(serializers.ModelSerializer):
+    friend_number = serializers.PrimaryKeyRelatedField(source='friend', read_only=True)
+    current_number = serializers.PrimaryKeyRelatedField(source='current_user', read_only=True)
     friend = serializers.SlugRelatedField(slug_field='username', read_only=True)
     current_user = serializers.SlugRelatedField(slug_field='username', read_only=True)
+    
     class Meta:
         model = Friend
-        fields = ('id','friend','created_at','current_user')
+        fields = ('id','friend','friend_number','current_number','created_at','current_user')
 
 class FriendPostSerializer(serializers.ModelSerializer):
     class Meta:
