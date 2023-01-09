@@ -184,6 +184,17 @@ class RecordHabitDetail(generics.ListAPIView):
         queryset = Record.objects.filter(week_reflection__in=reflection, date__range=(first, today)).order_by('-date')
         return queryset
 
+class RecentReflectionList(generics.ListAPIView):
+    queryset = Reflection.objects.all()
+    serializer_class = ReflectionSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        questionnaire_id = self.kwargs['id']
+        hope = Reflection.objects.filter(questionnaire=questionnaire_id).order_by('-date').first()
+        queryset = Reflection.objects.filter(id=hope.id)
+        return queryset
+
 class DataRecordHabitDetail(generics.ListAPIView):
     queryset = Record.objects.all()
     serializer_class = RecordDataSerializer
@@ -231,7 +242,7 @@ class ReflectionLatestHabitView(generics.ListAPIView):
 
     def get_queryset(self):
         questionnaire_id = self.kwargs['id']
-        reflect = Reflection.objects.filter(questionnaire=questionnaire_id).order_by('-date').first()
+        reflect = Reflection.objects.filter(questionnaire=questionnaire_id).latest()
         queryset = Reflection.objects.filter(id=reflect.id)
         return queryset
 
