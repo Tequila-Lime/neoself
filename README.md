@@ -14,6 +14,7 @@ https://neoself-be-service.onrender.com
 |questionnaire/int:pk/| This shows an individual questionnaire filled out | GET, PATCH | x | 
 |reflection/| see all reflections for a particular user | GET, POST | x |
 |questionnaire/<int:id>/reflection/| get all the reflections for a questionnaire | GET, POST | X |
+|reflection/latest/<int:id>/| latest reflection for habit |GET||
 |reflection/int:pk/ | see the details for an individual reflection | GET | x |
 |record/user/| be able to see all the users own records | GET | x |
 |record/all/| get all records for everyone | GET | X |

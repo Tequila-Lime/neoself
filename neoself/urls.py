@@ -14,6 +14,7 @@ urlpatterns = [
     path('questionnaire/<int:pk>/',views.QuestionnaireDetail.as_view(), name='specific-habit-questionnaire'),
     path('reflection/', views.ReflectionView.as_view(), name="reflection"),
     path('questionnaire/<int:id>/reflection/', views.ReflectionHabitView.as_view(), name='reflection-questionnaire'),
+    path('reflection/latest/<int:id>/', views.ReflectionLatestHabitView.as_view(), name='reflection-latest-questionnaire'),
     path('reflection/<int:pk>/', views.ReflectionDetail.as_view(), name=('reflection-detail')),
     path('friends/', views.FriendView.as_view(), name="friend"),
     path('friends/specific/<int:friend_id>/', views.FriendSpecificView.as_view(), name="friend-specific"),

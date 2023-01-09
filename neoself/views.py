@@ -224,6 +224,17 @@ class ReflectionHabitView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(questionnaire=self.kwargs['id'])
 
+class ReflectionLatestHabitView(generics.ListAPIView):
+    queryset = Reflection.objects.all()
+    serializer_class = ReflectionSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        questionnaire_id = self.kwargs['id']
+        reflect = Reflection.objects.filter(questionnaire=questionnaire_id).order_by('-date').first()
+        queryset = Reflection.objects.filter(id=reflect.id)
+        return queryset
+
 class ReflectionDetail(generics.RetrieveAPIView):
     '''
     Allows user to view reflection detail. Eventually there should be a time constraint on when a user is able to update
