@@ -66,6 +66,7 @@ class Reflection(models.Model):
     metric_label = models.CharField(max_length=50, null=True, blank=True)
     date = models.DateField(default=date.today)
     notif_time = models.TimeField(null=True, blank=True) 
+    start_end = models.BooleanField(default=True)
 
     def __str__(self):
         return f"reflection on {self.questionnaire} on {self.date}"
@@ -179,7 +180,8 @@ def save_reflection(sender,instance,created, *args, **kwargs):
             metric_baseline = instance.metric_baseline,
             goal_metric = instance.goal_metric,
             metric_label=instance.metric_label,
-            date = instance.date
+            date = instance.date,
+            start_end = instance.start_habit
         )
         loops = round(instance.duration / 7)
         if instance.start_today == True:
@@ -214,6 +216,7 @@ def save_reflection(sender,instance,created, *args, **kwargs):
             today = date.today()
             records = Record.objects.filter(week_reflection__questionnaire__id=instance.id,date__gt=today).update(public=instance.public, length=instance.duration)
             records = Record.objects.filter(week_reflection__questionnaire__id=instance.id).update(length=instance.duration)
+            reflection_update = Reflection.objects.filter(questionnaire=instance.id).update(start_end=instance.start_habit)
 
 #need day_in_habit to be determined by the date and auto generated
 @receiver(post_save, sender=Reflection)
