@@ -83,7 +83,7 @@ class QuestionnaireDetail(generics.RetrieveUpdateAPIView):
 
 class RecordView(generics.ListAPIView):
     queryset = Record.objects.all()
-    serializer_class = RecordSerializer
+    serializer_class = RecordDataSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
