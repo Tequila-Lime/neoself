@@ -71,11 +71,6 @@ class Reflection(models.Model):
     def __str__(self):
         return f"reflection on {self.questionnaire} on {self.date}"
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=['date', 'questionnaire'], name='unique_reflection')
-        ]
-
 class Record(models.Model):
     week_reflection = models.ForeignKey(Reflection, on_delete=models.CASCADE, null=True, blank=True)
     daily_record = models.IntegerField(default=0)
