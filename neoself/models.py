@@ -154,10 +154,6 @@ class Friend(models.Model):
     def __str__(self):
         return f"{self.current_user} is friends with {self.friend}"
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=['current_user', 'friend'], name='unique_friendship')
-        ]
 
 class Badge (models.Model):
     pass
