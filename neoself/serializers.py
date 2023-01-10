@@ -28,7 +28,7 @@ class ReflectionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Reflection
-        fields = ('id','start_end','questionnaire','cue_question_1','cue_question_2','cue_question_3','craving_question_1','response_question_1','response_question_2','date', 'metric_baseline','goal_metric','metric_label')
+        fields = ('id','name','start_end','questionnaire','cue_question_1','cue_question_2','cue_question_3','craving_question_1','response_question_1','response_question_2','date', 'metric_baseline','goal_metric','metric_label')
 
 class RecordSerializer(serializers.ModelSerializer):
     user_number = serializers.PrimaryKeyRelatedField(source='user', read_only=True)
