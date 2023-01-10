@@ -147,7 +147,7 @@ class UserRecordView(generics.ListAPIView):
 
 class RecordDetail(generics.RetrieveUpdateAPIView):
     queryset = Record.objects.all()
-    serializer_class = RecordSerializer
+    serializer_class = RecordDataSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 class UserTodayRecordView(generics.ListAPIView):
