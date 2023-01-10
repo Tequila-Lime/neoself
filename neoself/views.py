@@ -233,7 +233,10 @@ class ReflectionHabitView(generics.ListCreateAPIView):
         return queryset
 
     def perform_create(self, serializer):
-        serializer.save(questionnaire=self.kwargs['id'])
+        test = self.kwargs['id']
+        dot = Questionnaire.objects.get(id=test)
+        serializer.save(questionnaire=dot)
+        # breakpoint()
 
 class ReflectionLatestHabitView(generics.ListAPIView):
     queryset = Reflection.objects.all()
