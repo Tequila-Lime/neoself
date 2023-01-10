@@ -17,7 +17,7 @@ from corsheaders.defaults import default_headers
 
 env = environ.Env(
     # set casting, default value
-    DEBUG=(bool, False),
+    DEBUG=(bool, True),
 	RENDER=(bool, False),
     USE_S3=(bool, True),
 )
